@@ -36,18 +36,18 @@ jobs:
 
       - name: 📦 publish
         run: |
-          dotnet publish -c Release -r win10-x64 --self-contained -o dist/win-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
-          dotnet publish -c Release -r osx-x64 --self-contained -o dist/osx-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
-          dotnet publish -c Release -r osx-arm64 --self-contained -o dist/osx-arm64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
-          dotnet publish -c Release -r linux-x64 --self-contained -o dist/linux-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish src/Extension/Extension.csproj -c Release -r win10-x64 --self-contained -o bin/win-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish src/Extension/Extension.csproj -c Release -r osx-x64 --self-contained -o bin/osx-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish src/Extension/Extension.csproj -c Release -r osx-arm64 --self-contained -o bin/osx-arm64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish src/Extension/Extension.csproj -c Release -r linux-x64 --self-contained -o bin/linux-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
 
       - name: ➡️ artifacts
         run: |
           mkdir -p ${{ runner.temp }}/staging
-          cp dist/win-x64/gh-sponsors.exe ${{ runner.temp }}/staging/sponsors-windows-amd64.exe
-          cp dist/osx-x64/gh-sponsors ${{ runner.temp }}/staging/sponsors-darwin-amd64
-          cp dist/osx-arm64/gh-sponsors ${{ runner.temp }}/staging/sponsors-darwin-arm64
-          cp dist/linux-x64/gh-sponsors ${{ runner.temp }}/staging/sponsors-linux-amd64
+          cp bin/win-x64/gh-sponsors.exe ${{ runner.temp }}/staging/sponsors-windows-amd64.exe
+          cp bin/osx-x64/gh-sponsors ${{ runner.temp }}/staging/sponsors-darwin-amd64
+          cp bin/osx-arm64/gh-sponsors ${{ runner.temp }}/staging/sponsors-darwin-arm64
+          cp bin/linux-x64/gh-sponsors ${{ runner.temp }}/staging/sponsors-linux-amd64
 
       - name: ⬆️ upload
         uses: actions/upload-artifact@v3

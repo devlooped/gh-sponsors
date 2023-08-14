@@ -1,0 +1,15 @@
+<Project>
+
+  <PropertyGroup>
+    <RootNamespace>Devlooped.SponsorLink</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <ImplicitUsings>true</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectProperty Include="UserSecretsId"/>
+  </ItemGroup>
+
+</Project>

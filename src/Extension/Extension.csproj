@@ -2,19 +2,19 @@
 
   <PropertyGroup>
     <AssemblyName>gh-sponsors</AssemblyName>
-    <RootNamespace>Devlooped.SponsorLink</RootNamespace>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RuntimeIdentifiers>win10-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>    
-    <RollForward>Major</RollForward>
-    <ImplicitUsings>true</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.47.0" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Commands\Commands.csproj" />
   </ItemGroup>
 
 </Project>

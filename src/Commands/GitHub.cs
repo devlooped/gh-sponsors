@@ -31,6 +31,6 @@ public static class GitHub
         if (!Process.TryExecute("gh", "api user", out output))
             return default;
 
-        return JsonSerializer.Deserialize<Account>(output, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        return JsonSerializer.Deserialize<Account>(output, JsonOptions.Default);
     }
 }
