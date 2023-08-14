@@ -59,7 +59,7 @@ jobs:
     runs-on: windows-latest
     continue-on-error: true
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'release'
     defaults:
       run:
         shell: pwsh
