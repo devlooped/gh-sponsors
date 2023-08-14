@@ -1,0 +1,90 @@
+on:
+  pull_request:
+  push:
+    branches: [main]
+  release:
+    types: [released]
+    
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🤘 checkout
+        uses: actions/checkout@v2
+
+      - name: ✓ format
+        run: |
+          dotnet format whitespace --verify-no-changes -v:diag --exclude ~/.nuget
+          dotnet format style --verify-no-changes -v:diag --exclude ~/.nuget
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🤘 checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+          dotnet-quality: 'preview'
+
+      - name: 🙏 build
+        run: dotnet build -m:1
+
+      - name: 🧪 test
+        run: dotnet test
+
+      - name: 📦 publish
+        run: |
+          dotnet publish -c Release -r win10-x64 --self-contained -o dist/win-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish -c Release -r osx-x64 --self-contained -o dist/osx-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish -c Release -r osx-arm64 --self-contained -o dist/osx-arm64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish -c Release -r linux-x64 --self-contained -o dist/linux-x64 -p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
+      - name: ➡️ artifacts
+        run: |
+          mkdir -p ${{ runner.temp }}/staging
+          cp dist/win-x64/gh-sponsors.exe ${{ runner.temp }}/staging/sponsors-windows-amd64.exe
+          cp dist/osx-x64/gh-sponsors ${{ runner.temp }}/staging/sponsors-darwin-amd64
+          cp dist/osx-arm64/gh-sponsors ${{ runner.temp }}/staging/sponsors-darwin-arm64
+          cp dist/linux-x64/gh-sponsors ${{ runner.temp }}/staging/sponsors-linux-amd64
+
+      - name: ⬆️ upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: executables
+          path: ${{ runner.temp }}/staging/*
+
+  publish:
+    runs-on: windows-latest
+    continue-on-error: true
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: 🤖 defaults
+        uses: devlooped/actions-bot@v1
+        with:
+          name: ${{ secrets.BOT_NAME }}
+          email: ${{ secrets.BOT_EMAIL }}
+          gh_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🤘 checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ env.GH_TOKEN }}
+
+      - name: ⬇️ artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: executables
+          path: ${{ runner.temp }}/dist
+
+      - name: 🚀 release
+        run: |
+            dotnet tool update -g dotnet-gcm
+            dotnet gcm store --protocol=https --host=github.com --username=$env:GITHUB_ACTOR --password=$env:GH_TOKEN
+            gci ${{ runner.temp }}/dist | %{ gh release upload ${{ github.event.release.tag_name }} $_.FullName }
