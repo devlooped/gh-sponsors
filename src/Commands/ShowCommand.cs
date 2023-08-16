@@ -29,8 +29,6 @@ public class ShowCommand : Command
                 .RoundedBorder()
                 .BorderColor(Color.Green));
 
-        //AnsiConsole.MarkupLine($"[green]Authenticated as {account.Login}[/] [grey](id={account.Id})[/]");
-
         return 0;
     }
 }
