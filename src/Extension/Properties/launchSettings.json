@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Extension": {
+      "commandName": "Project",
+      "commandLineArgs": "-h"
+    }
+  }
+}
