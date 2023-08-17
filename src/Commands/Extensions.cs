@@ -1,4 +1,6 @@
-﻿using Spectre.Console;
+﻿using System.ComponentModel;
+using System.Text;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace Devlooped.SponsorLink;
@@ -15,21 +17,56 @@ public static class Extensions
     public static Table AsTable<T>(this IEnumerable<T> items)
     {
         var table = new Table();
-        var props = typeof(T).GetProperties();
+        var props = TypeDescriptor.GetProperties(typeof(T)).Cast<PropertyDescriptor>().ToList();
 
         foreach (var prop in props)
         {
-            table.AddColumn(prop.Name);
-            if (prop.PropertyType == typeof(DateTime))
-                table.Columns[table.Columns.Count - 1].RightAligned();
+            var name = prop.DisplayName;
+            if (!name.Contains(' '))
+            {
+                // Separate words by upper case letters
+                var sb = new StringBuilder();
+                foreach (var c in name)
+                {
+                    if (char.IsUpper(c))
+                        sb.Append(' ');
+                    sb.Append(c);
+                }
+                name = sb.ToString().Trim();
+            }
+
+            Action<TableColumn>? configure = null;
+
+            if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateOnly))
+                configure = c => c.Centered();
+
+            if (prop.PropertyType == typeof(bool))
+                configure = c => c.Centered();
 
             if (prop.PropertyType == typeof(int))
-                table.Columns[table.Columns.Count - 1].RightAligned();
+                configure = c => c.RightAligned();
+
+            table.AddColumn(name, configure);
         }
 
+        var values = new List<string>();
         foreach (var item in items)
         {
-            table.AddRow(props.Select(x => x.GetValue(item)?.ToString() ?? "").ToArray());
+            values.Clear();
+            foreach (var prop in props)
+            {
+                var value = prop.GetValue(item);
+                if (value is DateTime dt)
+                    values.Add(dt.ToString("yyyy-MM-dd HH:mm:ss"));
+                else if (value is DateOnly date)
+                    values.Add(date.ToString("yyyy-MM-dd"));
+                else if (value is bool b)
+                    if (b) values.Add("[green]✔[/]");
+                    else values.Add("");
+                else
+                    values.Add(value?.ToString() ?? "");
+            }
+            table.AddRow(values.ToArray());
         }
 
         return table;
