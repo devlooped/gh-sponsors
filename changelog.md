@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.1.3](https://github.com/devlooped/gh-sponsors/tree/v0.1.3) (2023-08-17)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.1.2...v0.1.3)
+
+:twisted_rightwards_arrows: Merged:
+
+- Adds a command that lists your current sponsorships [\#6](https://github.com/devlooped/gh-sponsors/pull/6) (@kzu)
+
 ## [v0.1.2](https://github.com/devlooped/gh-sponsors/tree/v0.1.2) (2023-08-14)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.1.1...v0.1.2)
