@@ -12,6 +12,15 @@ public static class GitHub
     public static bool TryIsInstalled(out string output)
         => Process.TryExecute("gh", "--version", out output) && output.StartsWith("gh version");
 
+    public static bool TryApi(string endpoint, string jq, out string? json)
+    {
+        var args = $"api {endpoint}";
+        if (!string.IsNullOrEmpty(jq))
+            args += $" --jq \"{jq}\"";
+
+        return Process.TryExecute("gh", args, out json);
+    }
+
     public static bool TryQuery(string query, string jq, out string? json)
     {
         var args = $"api graphql -f query=\"{query}\"";
@@ -20,14 +29,6 @@ public static class GitHub
 
         return Process.TryExecute("gh", args, out json);
     }
-
-    //public static bool TryApi(string endpoint, out JToken? json)
-    //{
-    //    json = null;
-
-    //    return Process.TryExecute("gh", "api " + endpoint, out var data) &&
-    //        (json = JsonConvert.DeserializeObject<JToken>(data)) != null;
-    //}
 
     public static Account? Authenticate()
     {

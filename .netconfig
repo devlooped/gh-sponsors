@@ -102,3 +102,8 @@
 [file "src/kzu.snk"]
 	url = https://github.com/devlooped/oss/blob/main/src/kzu.snk
     skip
+[file "src/Commands/System/Base62.cs"]
+	url = https://github.com/devlooped/catbag/blob/main/System/Base62.cs
+	sha = 43712304cdfff2c34ba01197cc2ccc0e16e7af08
+	etag = 045b9e458f11f846ae9a3979b8122c68173405fb5451083d4993f94004e60e76
+	weak
