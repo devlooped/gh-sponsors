@@ -15,7 +15,7 @@ public class ListCommand : GitHubCommand
                 """
                 query { 
                   viewer { 
-                    sponsorshipsAsSponsor(first: 100, orderBy: {field: CREATED_AT, direction: ASC}) {
+                    sponsorshipsAsSponsor(activeOnly: true, first: 100, orderBy: {field: CREATED_AT, direction: ASC}) {
                       nodes {
                          createdAt
                          isOneTimePayment

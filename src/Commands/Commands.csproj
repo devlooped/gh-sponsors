@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <AssemblyName>Devlooped.SponsorLink.Commands</AssemblyName>
+    <RootNamespace>Devlooped.SponsorLink</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\SponsorLink.pub" Link="SponsorLink.pub" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.1" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.47.0" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
     <PackageReference Include="Spectre.Console.Json" Version="0.47.0" />
