@@ -1,9 +1,12 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿
+using System.Text.Json;
 
 namespace Devlooped.SponsorLink;
 
-public record Account([property: JsonPropertyName("node_id")] string Id, string Login);
+public record Account(int Id, string Login)
+{
+    public string[] Emails { get; init; } = Array.Empty<string>();
+}
 
 public static class GitHub
 {
@@ -21,11 +24,16 @@ public static class GitHub
         return Process.TryExecute("gh", args, out json);
     }
 
-    public static bool TryQuery(string query, string jq, out string? json)
+    public static bool TryQuery(string query, string jq, out string? json, params (string name, string value)[] fields)
     {
         var args = $"api graphql -f query=\"{query}\"";
         if (!string.IsNullOrEmpty(jq))
             args += $" --jq \"{jq}\"";
+
+        foreach (var field in fields)
+        {
+            args += $" -f {field.name}={field.value}";
+        }
 
         return Process.TryExecute("gh", args, out json);
     }
@@ -41,6 +49,16 @@ public static class GitHub
         if (!Process.TryExecute("gh", "api user", out output))
             return default;
 
-        return JsonSerializer.Deserialize<Account>(output, JsonOptions.Default);
+        if (JsonSerializer.Deserialize<Account>(output, JsonOptions.Default) is not { } account)
+            return default;
+
+        if (!TryApi("user/emails", "[.[] | select(.verified == true) | .email]", out output) ||
+            string.IsNullOrEmpty(output))
+            return account;
+
+        return account with
+        {
+            Emails = JsonSerializer.Deserialize<string[]>(output, JsonOptions.Default) ?? Array.Empty<string>()
+        };
     }
 }

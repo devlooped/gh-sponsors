@@ -5,9 +5,9 @@ using Spectre.Console.Json;
 
 namespace Devlooped.SponsorLink;
 
-public class ShowCommand : GitHubCommand
+public class ShowCommand(Account account) : Command
 {
-    protected override int OnExecute(Account account, CommandContext context)
+    public override int Execute(CommandContext context)
     {
         var json = JsonSerializer.Serialize(account, JsonOptions.Default);
         AnsiConsole.Write(

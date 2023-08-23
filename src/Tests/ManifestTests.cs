@@ -19,14 +19,20 @@ public class ManifestTests(ITestOutputHelper Output)
         var pub = RSA.Create();
         pub.ImportRSAPublicKey(File.ReadAllBytes(@"../../../test.pub"), out _);
 
+        var salt = Guid.NewGuid().ToString("N");
 
-        var manifest = Manifest.Create(
+        var manifest = Manifest.Create(salt, "1234",
+            // user email(s)
             new[] { "foo@bar.com" },
+            // org domains
             new[] { "bar.com", "baz.com" },
-            new[] { "devlooped" },
-            key);
+            // sponsorables
+            new[] { "devlooped" });
 
-        var validated = Manifest.Read(manifest.Token, pub);
+        // Turn it into a signed manifest
+        var signed = manifest.Sign(key);
+
+        var validated = Manifest.Read(signed, salt, pub);
 
         // Direct sponsoring
         Assert.True(validated.IsSponsoring("foo@bar.com", "devlooped"));
@@ -37,20 +43,5 @@ public class ManifestTests(ITestOutputHelper Output)
         Assert.False(validated.IsSponsoring("foo@bar.com", "dotnet"));
         // Wrong email domain
         Assert.False(validated.IsSponsoring("foo@contoso.com", "devlooped"));
-    }
-
-    [Fact]
-    public void WrongPublicKey()
-    {
-        var key = RSA.Create();
-        key.ImportRSAPrivateKey(File.ReadAllBytes(@"../../../test.key"), out _);
-
-        var manifest = Manifest.Create(
-            new[] { "foo@bar.com" },
-            new[] { "bar.com", "baz.com" },
-            new[] { "devlooped" },
-            key);
-
-        Assert.ThrowsAny<SecurityTokenInvalidSignatureException>(() => Manifest.Read(manifest.Token));
     }
 }

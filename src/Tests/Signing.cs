@@ -11,9 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Devlooped.SponsorLink;
 
-public class Signing
+public class Signing(ITestOutputHelper Output)
 {
-    [Fact]
+    // NOTE: if you want to locally regenerate the keys, uncomment the following line
+    // NOTE: if you want to run locally the SL Functions App, you need to set the public 
+    // key as Base64 encoded string in the SPONSORLINK_KEY environment variable
+    //[Fact]
     public void CreateKeyPair()
     {
         // Generate key pair
@@ -22,6 +25,9 @@ public class Signing
         File.WriteAllBytes(@"../../../test.pub", rsa.ExportRSAPublicKey());
         File.WriteAllBytes(@"../../../test.key", rsa.ExportRSAPrivateKey());
     }
+
+    [Fact]
+    public void WritePublicKey() => Output.WriteLine(Convert.ToBase64String(Manifest.PublicKey.ExportRSAPublicKey()));
 
     [Fact]
     public void SignFile()
