@@ -40,7 +40,7 @@ public class ListCommand(Account account) : Command
                       }
                     }
                     """,
-                            """
+                    """
                     [.data.viewer.sponsorshipsAsSponsor.nodes.[] | { sponsorable: .sponsorable.login, dollars: .tier.monthlyPriceInDollars, oneTime: .isOneTimePayment, createdAt } ]
                     """, out json) || string.IsNullOrEmpty(json))
                 {

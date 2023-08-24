@@ -8,10 +8,9 @@ public partial class ValidateCommand : Command
 {
     public override int Execute(CommandContext context)
     {
-        var token = Environment.GetEnvironmentVariable("SPONSORLINK_MANIFEST", EnvironmentVariableTarget.User);
-        if (string.IsNullOrEmpty(token))
+        if (Variables.Manifest is not string token)
         {
-            AnsiConsole.MarkupLine("[red]No SponsorLink manifest found.[/] Run [white]gh sponsors sync[/] to initialize it.");
+            AnsiConsole.MarkupLine("[red]x[/] No SponsorLink manifest found. Run [yellow]gh sponsors[/] to initialize it.");
             return -1;
         }
 
@@ -21,22 +20,22 @@ public partial class ValidateCommand : Command
         }
         catch (SecurityTokenExpiredException)
         {
-            AnsiConsole.MarkupLine("[red]The manifest has expired.[/] Run [white]gh sponsors sync[/] to generate a new one.");
+            AnsiConsole.MarkupLine("[red]x[/] The manifest has expired. Run [yellow]gh sponsors[/] to generate a new one.");
             return -2;
         }
         catch (SecurityTokenInvalidSignatureException)
         {
-            AnsiConsole.MarkupLine("[red]The manifest signature is invalid.[/] Run [white]gh sponsors sync[/] to generate a new one.");
+            AnsiConsole.MarkupLine("[red]x[/] The manifest signature is invalid. Run [yellow]gh sponsors[/] to generate a new one.");
             return -3;
         }
         catch (SecurityTokenException ex)
         {
-            AnsiConsole.MarkupLine($"[red]The manifest is invalid.[/] Run [white]gh sponsors sync[/] to generate a new one.");
+            AnsiConsole.MarkupLine($"[red]x[/] The manifest is invalid. Run [yellow]gh sponsors[/] to generate a new one.");
             AnsiConsole.WriteException(ex);
             return -4;
         }
 
-        AnsiConsole.MarkupLine("[green]The manifest is valid.[/]");
+        AnsiConsole.MarkupLine("[green]✓[/] The manifest is valid.");
         return 0;
     }
 }
