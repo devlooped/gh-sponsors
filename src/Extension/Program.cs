@@ -1,4 +1,5 @@
-﻿using Devlooped.SponsorLink;
+﻿using System.Diagnostics;
+using Devlooped.SponsorLink;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -9,10 +10,30 @@ if (!GitHub.IsInstalled)
     return -1;
 }
 
+if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SPONSORLINK_INSTALLATION", EnvironmentVariableTarget.User)))
+    args = new[] { "first" };
+
 if (GitHub.Authenticate() is not { } account)
 {
-    AnsiConsole.MarkupLine("Please run [yellow]gh auth login[/] to authenticate, [yellow]gh auth status -h github.com[/] to verify your status.");
-    return -1;
+    if (!AnsiConsole.Confirm(ThisAssembly.Strings.GitHub.Login))
+    {
+        AnsiConsole.MarkupLine("[grey]-[/] Please run [yellow]gh auth login[/] to authenticate, [yellow]gh auth status -h github.com[/] to verify your status.");
+        return -1;
+    }
+
+    var process = Process.Start("gh", "auth login");
+
+    process.WaitForExit();
+    if (process.ExitCode != 0)
+        return process.ExitCode;
+
+    account = GitHub.Authenticate();
+    if (account is null)
+    {
+        AnsiConsole.MarkupLine("[red]x[/] Could not retrieve authenticated user with GitHub CLI.");
+        AnsiConsole.MarkupLine("[grey]-[/] Please run [yellow]gh auth login[/] to authenticate, [yellow]gh auth status -h github.com[/] to verify your status.");
+        return -1;
+    }
 }
 
 // Provide the authenticated GH CLI user account via DI
@@ -21,12 +42,17 @@ registrations.AddSingleton(account);
 var registrar = new TypeRegistrar(registrations);
 
 var app = new CommandApp<SyncCommand>(registrar);
+registrations.AddSingleton<ICommandApp>(app);
+
 app.Configure(config =>
 {
-    //config.AddCommand<ShowCommand>();
+    // Change so it matches the actual user experience as a GH CLI extension
+    config.SetApplicationName("gh sponsors");
+
     config.AddCommand<ListCommand>().WithDescription("Lists user and organization sponsorships");
     config.AddCommand<SyncCommand>().WithDescription("Synchronizes the sponsorships manifest");
     config.AddCommand<ValidateCommand>().WithDescription("Validates the active sponsorships manifest, if any");
+    config.AddCommand<WelcomeCommand>().WithDescription("Executes the first-run experience");
 
 #if DEBUG
     //config.PropagateExceptions();
@@ -44,7 +70,8 @@ if (args.Length == 0)
             {
                 "list",
                 "sync",
-                "validate"
+                "validate",
+                "welcome",
             }));
 
     args = new[] { command };

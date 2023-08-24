@@ -68,6 +68,8 @@ public static class Session
             return principal;
         }
 
+
+
         var client = new AuthenticationApiClient(new Uri(Issuer));
         var verifier = Guid.NewGuid().ToString("N");
         var challenge = Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(verifier)));

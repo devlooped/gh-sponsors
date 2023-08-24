@@ -12,14 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="Auth0.AuthenticationApi" Version="7.22.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.32.1" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.47.0" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
     <PackageReference Include="Spectre.Console.Json" Version="0.47.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.32.1" />
+    <PackageReference Include="ThisAssembly.Strings" Version="1.4.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Tests"/>
+    <InternalsVisibleTo Include="Tests" />
   </ItemGroup>
 
 </Project>
