@@ -173,7 +173,7 @@ public partial class SyncCommand(Account user) : AsyncCommand
         }
         else if (!response.IsSuccessStatusCode)
         {
-            AnsiConsole.MarkupLine($"[red]Could not sign manifest: {response.StatusCode} ({await response.Content.ReadAsStringAsync()}).");
+            AnsiConsole.MarkupLine($"[red]Could not sign manifest: {response.StatusCode} ({await response.Content.ReadAsStringAsync()}).[/]");
             return -1;
         }
 
