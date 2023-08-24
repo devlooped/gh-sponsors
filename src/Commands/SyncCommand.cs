@@ -25,7 +25,7 @@ public partial class SyncCommand(Account user) : AsyncCommand
             return -1;
         }
 
-        if (user.Id != id.ToString())
+        if (user.Id != id)
         {
             AnsiConsole.MarkupLine($"[red]x[/] SponsorLink authenticated user id ({id}) does not match GitHub CLI user id ({user.Id}).");
             return -1;
