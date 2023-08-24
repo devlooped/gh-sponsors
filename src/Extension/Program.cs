@@ -10,8 +10,9 @@ if (!GitHub.IsInstalled)
     return -1;
 }
 
-if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SPONSORLINK_INSTALLATION", EnvironmentVariableTarget.User)))
-    args = new[] { "first" };
+// If we don't have an installation id, we need to run the first-run experience
+if (Variables.InstallationId is null)
+    args = new[] { "welcome" };
 
 if (GitHub.Authenticate() is not { } account)
 {

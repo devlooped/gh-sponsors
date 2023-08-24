@@ -21,13 +21,13 @@ public partial class SyncCommand(Account user) : AsyncCommand
         var principal = await Session.AuthenticateAsync();
         if (!int.TryParse(principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value.Split('|')?[1], out var id))
         {
-            AnsiConsole.MarkupLine("[red]Could not determine SponsorLink user id.");
+            AnsiConsole.MarkupLine("[red]x[/] Could not determine SponsorLink user id.");
             return -1;
         }
 
-        if (user.Id != id)
+        if (user.Id != id.ToString())
         {
-            AnsiConsole.MarkupLine($"[red]SponsorLink authenticated user id ({id}) does not match GitHub CLI user id ({user.Id}).");
+            AnsiConsole.MarkupLine($"[red]x[/] SponsorLink authenticated user id ({id}) does not match GitHub CLI user id ({user.Id}).");
             return -1;
         }
 
@@ -168,7 +168,7 @@ public partial class SyncCommand(Account user) : AsyncCommand
         // If we end up with no sponsorships whatesover, no-op and exit.
         if (usersponsored.Count == 0 && orgsponsored.Count == 0)
         {
-            AnsiConsole.MarkupLine($"[yellow]User {user.Login} (or any of the organizations they long to) is not currently sponsoring any accounts.");
+            AnsiConsole.MarkupLine($"[yellow]![/] User {user.Login} (or any of the organizations they long to) is not currently sponsoring any accounts.");
             return 0;
         }
 
@@ -179,7 +179,7 @@ public partial class SyncCommand(Account user) : AsyncCommand
             new HashSet<string>(usersponsored.Concat(orgsponsored)).ToArray());
 
         using var http = new HttpClient();
-        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session.AccessToken);
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Variables.AccessToken);
 
         // NOTE: to test the local flow end to end, run the SponsorLink functions App project locally. You will 
         var url = Debugger.IsAttached ? "http://localhost:7288/sign" : "https://sponsorlink.devlooped.com/sign";
@@ -205,7 +205,8 @@ public partial class SyncCommand(Account user) : AsyncCommand
         Debug.Assert(manifest.Hashes.SequenceEqual(signedManifest.Hashes));
 
         AnsiConsole.MarkupLine($"[green]✓[/] Got signed manifest, expires on {signedManifest.ExpiresAt:yyyy-MM-dd}.");
-        Environment.SetEnvironmentVariable("SPONSORLINK_MANIFEST", signed, EnvironmentVariableTarget.User);
+
+        Variables.Manifest = signed;
 
         var tree = new Tree(new Text(Emoji.Replace(":purple_heart: Sponsorships"), new Style(Color.MediumPurple2)));
 

@@ -17,8 +17,6 @@ namespace Devlooped.SponsorLink;
 /// </summary>
 public static class Session
 {
-    const string InstallationVariable = "SPONSORLINK_INSTALLATION";
-    const string AccessTokenVariable = "SPONSORLINK_TOKEN";
     const string Issuer = "https://sponsorlink.us.auth0.com/";
     const string Audience = "https://sponsorlink.devlooped.com";
 
@@ -35,19 +33,14 @@ public static class Session
             new OpenIdConnectConfigurationRetriever(),
             new HttpDocumentRetriever { RequireHttps = true });
 
-        if (Environment.GetEnvironmentVariable(InstallationVariable, EnvironmentVariableTarget.User) is not string installation)
+        if (Variables.InstallationId is not string installation)
         {
             installation = Guid.NewGuid().ToString("N");
-            Environment.SetEnvironmentVariable(InstallationVariable, installation, EnvironmentVariableTarget.User);
+            Variables.InstallationId = installation;
         }
 
         InstallationId = installation;
     }
-
-    /// <summary>
-    /// Gets the current SponsorLink-authenticated access token.
-    /// </summary>
-    public static string? AccessToken => Environment.GetEnvironmentVariable(AccessTokenVariable, EnvironmentVariableTarget.User);
 
     /// <summary>
     /// Gets a unique identifier for this installation, which can be used for salting 
@@ -62,13 +55,13 @@ public static class Session
     {
         // We cache the token in an environment variable to avoid having to re-authenticate
         // unless the token is expired or invalid.
-        if (Environment.GetEnvironmentVariable(AccessTokenVariable, EnvironmentVariableTarget.User) is string token &&
+        if (Variables.AccessToken is string token &&
             await ValidateTokenAsync(token) is ClaimsPrincipal principal)
         {
             return principal;
         }
 
-
+        // TODO: ask to open browser?
 
         var client = new AuthenticationApiClient(new Uri(Issuer));
         var verifier = Guid.NewGuid().ToString("N");
@@ -117,7 +110,7 @@ public static class Session
 
         if (await ValidateTokenAsync(token) is ClaimsPrincipal validated)
         {
-            Environment.SetEnvironmentVariable(AccessTokenVariable, token, EnvironmentVariableTarget.User);
+            Variables.AccessToken = token;
             return validated;
         }
 
