@@ -22,10 +22,10 @@ public static class Variables
     /// </summary>
     public static string? InstallationId
     {
-        get => Environment.GetEnvironmentVariable(Constants.InstallationVariable, EnvironmentVariableTarget.User) is string id ?
+        get => Environment.GetEnvironmentVariable(Constants.InstallationIdVariable, EnvironmentVariableTarget.User) is string id ?
             !string.IsNullOrEmpty(id) ?
             id : null : null;
-        set => Environment.SetEnvironmentVariable(Constants.InstallationVariable, value, EnvironmentVariableTarget.User);
+        set => Environment.SetEnvironmentVariable(Constants.InstallationIdVariable, value, EnvironmentVariableTarget.User);
     }
         
     /// <summary>
