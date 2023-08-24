@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.2.0](https://github.com/devlooped/gh-sponsors/tree/v0.2.0) (2023-08-24)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.1.4...v0.2.0)
+
+:sparkles: Implemented enhancements:
+
+- Drop base62, switch to more common base64 hash encoding [\#13](https://github.com/devlooped/gh-sponsors/issues/13)
+- Create check command, which performs same action as a build task/analyzer would [\#12](https://github.com/devlooped/gh-sponsors/issues/12)
+- Create check command, which performs same action as a build task/analyzer [\#16](https://github.com/devlooped/gh-sponsors/pull/16) (@kzu)
+- Drop base62, switch to more common base64 hash encoding [\#14](https://github.com/devlooped/gh-sponsors/pull/14) (@kzu)
+- Add first-run experience, with some explanations [\#11](https://github.com/devlooped/gh-sponsors/pull/11) (@kzu)
+
 ## [v0.1.4](https://github.com/devlooped/gh-sponsors/tree/v0.1.4) (2023-08-24)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.1.3...v0.1.4)
