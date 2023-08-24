@@ -75,6 +75,11 @@ public class Manifest
                     SHA256.HashData(Encoding.UTF8.GetBytes(salt + email[(index + 1)..] + sponsorable)))))));
 
     /// <summary>
+    /// Gets the expiration date of the current manifest.
+    /// </summary>
+    public DateTime ExpiresAt { get; private set; }
+
+    /// <summary>
     /// Hashes contained in the manifest.
     /// </summary>
     public IEnumerable<string> Hashes => linked;
@@ -138,9 +143,12 @@ public class Manifest
             IssuerSigningKey = new RsaSecurityKey(rsa)
         };
 
-        var principal = new JwtSecurityTokenHandler().ValidateToken(token, validation, out var _);
+        var principal = new JwtSecurityTokenHandler().ValidateToken(token, validation, out var securityToken);
 
-        return new Manifest(token, salt, principal);
+        return new Manifest(token, salt, principal)
+        {
+            ExpiresAt = securityToken.ValidTo
+        };
     }
 
     /// <summary>
@@ -184,7 +192,10 @@ public class Manifest
         // Serialize the token and return as a string
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return new Manifest(jwt, salt, linked);
+        return new Manifest(jwt, salt, linked)
+        {
+            ExpiresAt = token.ValidTo
+        };
     }
 
     /// <summary>

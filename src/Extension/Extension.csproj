@@ -4,7 +4,7 @@
     <AssemblyName>gh-sponsors</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RuntimeIdentifiers>win10-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>    
+    <RuntimeIdentifiers>win10-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,5 +17,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Commands\Commands.csproj" />
   </ItemGroup>
+
+  <Target Name="_RemoveCulturedResxFromStrings" AfterTargets="_InjectRexAdditionalFiles;_InjectResxAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+    <ItemGroup>
+      <ResxCode Remove="@(ResxCode -&gt; WithMetadataValue('WithCulture', 'true'))" />
+      <AdditionalFiles Remove="@(AdditionalFiles -&gt; WithMetadataValue('WithCulture', 'true'))" />
+    </ItemGroup>
+  </Target>
 
 </Project>
