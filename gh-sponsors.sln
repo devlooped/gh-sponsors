@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "src\Tests\Tests.cs
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCB7A75C-01A9-4305-B7DF-4F9E0680524B}"
 	ProjectSection(SolutionItems) = preProject
+		.netconfig = .netconfig
 		src\Directory.props = src\Directory.props
 		src\Directory.targets = src\Directory.targets
 		readme.md = readme.md
