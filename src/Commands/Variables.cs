@@ -27,7 +27,7 @@ public static class Variables
             id : null : null;
         set => Environment.SetEnvironmentVariable(Constants.InstallationIdVariable, value, EnvironmentVariableTarget.User);
     }
-        
+
     /// <summary>
     /// Gets the JWT token containing the hashed claims that represent 
     /// active sponsorships.
