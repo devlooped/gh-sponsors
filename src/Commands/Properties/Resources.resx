@@ -165,6 +165,9 @@ Please read the full privacy policy at [link]https://github.com/devlooped/Sponso
   <data name="GitHub_Login" xml:space="preserve">
     <value>[lime]?[/] [white]Do you want to log into the GitHub CLI?[/]</value>
   </data>
+  <data name="GitHub_UserScope" xml:space="preserve">
+    <value>[lime]?[/] [white]Allow read-access to your GitHub account email address(es)?[/] (Required for manifest generation)</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
