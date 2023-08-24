@@ -133,7 +133,7 @@ This information is used to locally create a JWT token with hash claims of [blue
 
 The [bold]random salt[/] is initialized to a GUID the first time you run this extension. Once hashed, the values are entirely opaque. Packages can use this JWT manifest to check (entirely offline) for hashed claims matching the salt + current user + sponsorable account.
 
-This manifest needs to be sync'ed once a month, which is the only point at which it is sent to our backend purely for signing with SponsorLink's private key (and refreshing the expiration date).</value>
+This manifest needs to be explicitly sync'ed once a month, which is the only point at which it is sent to our backend purely for signing with SponsorLink's private key (and refreshing the expiration date).</value>
     <comment>How</comment>
   </data>
   <data name="FirstRun_HowTitle" xml:space="preserve">
