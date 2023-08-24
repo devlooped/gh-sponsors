@@ -183,12 +183,15 @@ public class Manifest
             }
         }
 
+        // Expire the first day of the next month
+        var expiration = DateTime.UtcNow.AddMonths(1);
+        expiration = new DateTime(expiration.Year, expiration.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+
         var token = new JwtSecurityToken(
             issuer: "Devlooped",
             audience: "SponsorLink",
             claims: new[] { new Claim("sub", user) }.Concat(linked.Select(x => new Claim("hash", x))),
-            // Expire at the end of the month
-            expires: new DateTime(DateTime.Today.Year, DateTime.Today.Month + 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            expires: expiration);
 
         // Serialize the token and return as a string
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
@@ -211,7 +214,7 @@ public class Manifest
         var jwt = new JwtSecurityToken(
             issuer: token.Issuer,
             audience: token.Audiences.First(),
-            claims: token.Claims,
+            claims: token.Claims.Where(c => c.Type != "exp" && c.Type != "aud" && c.Type != "iss"),
             expires: token.ValidTo,
             signingCredentials: signing);
 
