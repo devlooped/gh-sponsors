@@ -75,6 +75,7 @@ app.Configure(config =>
     // Change so it matches the actual user experience as a GH CLI extension
     config.SetApplicationName("gh sponsors");
 
+    config.AddCommand<CheckCommand>();
     config.AddCommand<ListCommand>().WithDescription("Lists user and organization sponsorships");
     config.AddCommand<SyncCommand>().WithDescription("Synchronizes the sponsorships manifest");
     config.AddCommand<ValidateCommand>().WithDescription("Validates the active sponsorships manifest, if any");
