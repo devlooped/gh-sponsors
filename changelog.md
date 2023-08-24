@@ -1,6 +1,6 @@
 # Changelog
 
-## [v0.1.4](https://github.com/devlooped/gh-sponsors/tree/v0.1.4) (2023-08-23)
+## [v0.1.4](https://github.com/devlooped/gh-sponsors/tree/v0.1.4) (2023-08-24)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.1.3...v0.1.4)
 
@@ -8,6 +8,10 @@
 
 - Add random GUID talk to all hashes, simplify commands [\#8](https://github.com/devlooped/gh-sponsors/pull/8) (@kzu)
 - Add manifest creation and validation commands [\#7](https://github.com/devlooped/gh-sponsors/pull/7) (@kzu)
+
+:bug: Fixed bugs:
+
+- Fix unbalanced markup when failing to sign [\#10](https://github.com/devlooped/gh-sponsors/pull/10) (@kzu)
 
 ## [v0.1.3](https://github.com/devlooped/gh-sponsors/tree/v0.1.3) (2023-08-17)
 
