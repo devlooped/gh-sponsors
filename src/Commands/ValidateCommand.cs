@@ -16,7 +16,9 @@ public partial class ValidateCommand : Command
 
         try
         {
-            Manifest.Read(token);
+            var manifest = Manifest.Read(token);
+            AnsiConsole.MarkupLine($"[green]✓[/] The manifest is valid, expires on {manifest.ExpiresAt:yyyy-MM-dd}.");
+            return 0;
         }
         catch (SecurityTokenExpiredException)
         {
@@ -34,8 +36,5 @@ public partial class ValidateCommand : Command
             AnsiConsole.WriteException(ex);
             return -4;
         }
-
-        AnsiConsole.MarkupLine("[green]✓[/] The manifest is valid.");
-        return 0;
     }
 }
