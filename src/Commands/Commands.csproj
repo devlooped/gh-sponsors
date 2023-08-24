@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\SponsorLink.pub" Link="SponsorLink.pub" />
+    <None Include="..\SponsorLink.txt" Link="SponsorLink.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Auth0.AuthenticationApi" Version="7.22.2" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.32.1" />
+    <PackageReference Include="PolySharp" Version="1.13.2" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.47.0" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
     <PackageReference Include="Spectre.Console.Json" Version="0.47.0" />
