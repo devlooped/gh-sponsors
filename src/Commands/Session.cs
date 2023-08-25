@@ -75,7 +75,7 @@ public static class Session
         var uri = client.BuildAuthorizationUrl()
             .WithAudience("https://sponsorlink.devlooped.com")
             .WithClient("ZUMhc9T4TdJtTsjGaKwEnVZALgpw0fF9")
-            .WithScopes("openid", "profile", "email")
+            .WithScopes("openid", "profile")
             .WithResponseType(AuthorizationResponseType.Code)
             .WithNonce(challenge)
             .WithRedirectUrl("http://localhost:4242")
