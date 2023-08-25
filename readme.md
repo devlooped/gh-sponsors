@@ -45,6 +45,8 @@ Available commands:
   signing-in with your GitHub account both on the CLI and on github.com to authenticate 
   with SponsorLink backend for signing.
 * `gh sponsors validate`: checks if the current manifest is valid and not expired.
+* `gh sponsors remove`: removes all associated environment variables and backend 
+  information for the current user.
 
 > NOTE: running `gh sponsors` invokes the `sync` command.
 
