@@ -1,9 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using System.ComponentModel;
+using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace Devlooped.SponsorLink;
 
+[Description("Validates the active sponsorships manifest, if any")]
 public partial class ValidateCommand : Command
 {
     public override int Execute(CommandContext context)
