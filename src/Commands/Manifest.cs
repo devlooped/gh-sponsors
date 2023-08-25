@@ -128,7 +128,8 @@ public class Manifest
     /// <summary>
     /// Reads a manifest and validates it using the embedded public key.
     /// </summary>
-    public static Manifest Read(string token) => Read(token, Session.InstallationId, PublicKey);
+    public static Manifest Read(string token) => Read(token, 
+        Variables.InstallationId ??= Guid.NewGuid().ToString("N"), PublicKey);
 
     /// <summary>
     /// Reads a manifest and validates it using the embedded public key.
