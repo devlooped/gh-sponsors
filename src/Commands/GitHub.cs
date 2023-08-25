@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Text.Json;
 
 namespace Devlooped.SponsorLink;
@@ -30,9 +31,9 @@ public static class GitHub
         if (!string.IsNullOrEmpty(jq))
             args += $" --jq \"{jq}\"";
 
-        foreach (var field in fields)
+        foreach (var (name, value) in fields)
         {
-            args += $" -f {field.name}={field.value}";
+            args += $" -f {name}={value}";
         }
 
         return Process.TryExecute("gh", args, out json);

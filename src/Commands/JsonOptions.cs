@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -22,7 +23,7 @@ static class JsonOptions
     public class DateOnlyJsonConverter : JsonConverter<DateOnly>
     {
         public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            => DateOnly.Parse(reader.GetString()?.Substring(0, 10) ?? "", CultureInfo.InvariantCulture);
+            => DateOnly.Parse(reader.GetString()?[..10] ?? "", CultureInfo.InvariantCulture);
 
         public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
             => writer.WriteStringValue(value.ToString("O", CultureInfo.InvariantCulture));

@@ -4,6 +4,8 @@
     <AssemblyName>Devlooped.SponsorLink.Commands</AssemblyName>
     <RootNamespace>Devlooped.SponsorLink</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
+    <!-- Makes it easier to write code that can be simply sync'ed -->
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
