@@ -76,10 +76,11 @@ app.Configure(config =>
     config.SetApplicationName("gh sponsors");
 
     config.AddCommand<CheckCommand>();
-    config.AddCommand<ListCommand>().WithDescription("Lists user and organization sponsorships");
-    config.AddCommand<SyncCommand>().WithDescription("Synchronizes the sponsorships manifest");
-    config.AddCommand<ValidateCommand>().WithDescription("Validates the active sponsorships manifest, if any");
-    config.AddCommand<WelcomeCommand>().WithDescription("Executes the first-run experience");
+    config.AddCommand<ListCommand>();
+    config.AddCommand<RemoveCommand>();
+    config.AddCommand<SyncCommand>();
+    config.AddCommand<ValidateCommand>();
+    config.AddCommand<WelcomeCommand>();
 
 #if DEBUG
     //config.PropagateExceptions();

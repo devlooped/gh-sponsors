@@ -9,6 +9,7 @@ using Auth0.AuthenticationApi.Models;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Spectre.Console;
 
 namespace Devlooped.SponsorLink;
 
@@ -62,6 +63,10 @@ public static class Session
         }
 
         // TODO: ask to open browser?
+        if (!AnsiConsole.Confirm(ThisAssembly.Strings.Session.OpenBrowser))
+        {
+            return null;
+        }
 
         var client = new AuthenticationApiClient(new Uri(Issuer));
         var verifier = Guid.NewGuid().ToString("N");
@@ -114,6 +119,7 @@ public static class Session
             return validated;
         }
 
+        AnsiConsole.MarkupLine("[red]x[/] Could not determine authenticated user id.");
         return default;
     }
 

@@ -5,6 +5,7 @@ using Spectre.Console.Cli;
 
 namespace Devlooped.SponsorLink;
 
+[Description("Lists user and organization sponsorships")]
 public class ListCommand(Account account) : Command
 {
     record Sponsorship(string Sponsorable, [property: DisplayName("Tier (USD)")] int Dollars, DateOnly CreatedAt, [property: DisplayName("One-time")] bool OneTime);

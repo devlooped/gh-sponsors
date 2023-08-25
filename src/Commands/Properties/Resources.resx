@@ -171,11 +171,26 @@ Please read the full privacy policy at [link]https://github.com/devlooped/Sponso
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Remove_AuthenticationRequired" xml:space="preserve">
+    <value>[red]x[/] Removal of user data requires an authenticated user.</value>
+  </data>
+  <data name="Remove_Deleted" xml:space="preserve">
+    <value>[green]✓[/] Deleted authenticated user from backend</value>
+  </data>
+  <data name="Remove_Deleting" xml:space="preserve">
+    <value>Requesting removal of all user data ...</value>
+  </data>
+  <data name="Remove_ReportIssue" xml:space="preserve">
+    <value>[red]x[/] Failed to remove user data. Please report the issue at [link]https://github.com/devlooped/SponsorLink/issues/new[/]</value>
+  </data>
   <data name="Session_OpenBrowser" xml:space="preserve">
-    <value>[white]Press Enter[/] to open github.com in your browser ...</value>
+    <value>[lime]?[/] [white]Operation requires authentication on github.com. Open your browser now?[/]</value>
   </data>
   <data name="Sync_Signing" xml:space="preserve">
     <value>Requesting manifest signing ...</value>
+  </data>
+  <data name="Variables_Cleared" xml:space="preserve">
+    <value>[green]✓[/] Cleared {0} user environment variable</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

@@ -1,4 +1,6 @@
-﻿namespace Devlooped.SponsorLink;
+﻿using Spectre.Console;
+
+namespace Devlooped.SponsorLink;
 
 /// <summary>
 /// Provides simplified access to the key environment variables.
@@ -38,5 +40,20 @@ public static class Variables
             !string.IsNullOrEmpty(manifest) ?
             manifest : null : null;
         set => Environment.SetEnvironmentVariable(Constants.ManifestVariable, value, EnvironmentVariableTarget.User);
+    }
+
+    /// <summary>
+    /// Clears all environment variables used by SponsorLink.
+    /// </summary>
+    public static void Clear()
+    {
+        AccessToken = null;
+        AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.AccessTokenVariable));
+
+        InstallationId = null;
+        AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.InstallationIdVariable));
+
+        Manifest = null;
+        AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.ManifestVariable));
     }
 }

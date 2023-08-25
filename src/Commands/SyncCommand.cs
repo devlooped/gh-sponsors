@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
@@ -7,6 +8,7 @@ using Spectre.Console.Cli;
 
 namespace Devlooped.SponsorLink;
 
+[Description("Synchronizes the sponsorships manifest")]
 public partial class SyncCommand(Account user) : AsyncCommand
 {
     record Organization(string Login, string Email, string WebsiteUrl);
@@ -19,9 +21,12 @@ public partial class SyncCommand(Account user) : AsyncCommand
 
         // Authenticated user must match GH user
         var principal = await Session.AuthenticateAsync();
-        if (!int.TryParse(principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value.Split('|')?[1], out var id))
+        if (principal == null)
+            return -1;
+
+        if (!int.TryParse(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value.Split('|')?[1], out var id))
         {
-            AnsiConsole.MarkupLine("[red]x[/] Could not determine SponsorLink user id.");
+            AnsiConsole.MarkupLine("[red]x[/] Could not determine authenticated user id.");
             return -1;
         }
 
