@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.3.1](https://github.com/devlooped/gh-sponsors/tree/v0.3.1) (2023-08-25)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.3.0...v0.3.1)
+
+:sparkles: Implemented enhancements:
+
+- Don't request email scope [\#20](https://github.com/devlooped/gh-sponsors/pull/20) (@kzu)
+
 ## [v0.3.0](https://github.com/devlooped/gh-sponsors/tree/v0.3.0) (2023-08-25)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.2.0...v0.3.0)
