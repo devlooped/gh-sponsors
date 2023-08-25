@@ -14,7 +14,7 @@ namespace Devlooped.SponsorLink;
 /// <summary>
 /// Represents a manifest of sponsorship claims.
 /// </summary>
-public class Manifest
+public partial class Manifest
 {
     static readonly SHA256 sha = SHA256.Create();
     readonly string salt;
@@ -45,15 +45,44 @@ public class Manifest
 
     static Manifest()
     {
-        PublicKey = RSA.Create();
         using var stream = typeof(Manifest).Assembly
             .GetManifestResourceStream("Devlooped.SponsorLink.SponsorLink.pub");
 
         var mem = new MemoryStream((int)stream!.Length);
         stream.CopyTo(mem);
 
-        PublicKey.ImportRSAPublicKey(mem.ToArray(), out _);
+        PublicKey = CreateRSAFromPublicKey(mem.ToArray());
     }
+
+#if NET6_0_OR_GREATER
+    static RSA CreateRSAFromPublicKey(byte[] publicKey)
+    {
+        var rsa = RSA.Create();
+        rsa.ImportRSAPublicKey(publicKey, out _);
+        return rsa;
+    }
+#else
+    /// <summary>
+    /// NOTE: this downlevel implementation requires a package reference to 
+    /// BouncyCastle.Cryptography
+    /// </summary>
+    static RSA CreateRSAFromPublicKey(byte[] publicKey)
+    {
+        var asn1Object = Asn1Object.FromByteArray(publicKey);
+        var publicKeyStructure = RsaPublicKeyStructure.GetInstance(asn1Object);
+        var rsaParameters = new RsaKeyParameters(false, publicKeyStructure.Modulus, publicKeyStructure.PublicExponent);
+
+        var rsaParams = new RSAParameters
+        {
+            Modulus = rsaParameters.Modulus.ToByteArrayUnsigned(),
+            Exponent = rsaParameters.Exponent.ToByteArrayUnsigned()
+        };
+
+        var rsa = RSA.Create();
+        rsa.ImportParameters(rsaParams);
+        return rsa;
+    }
+#endif
 
     Manifest(string jwt, string salt, ClaimsPrincipal principal)
         : this(jwt, salt, new HashSet<string>(principal.FindAll("hash").Select(x => x.Value))) { }
@@ -128,7 +157,7 @@ public class Manifest
     /// <summary>
     /// Reads a manifest and validates it using the embedded public key.
     /// </summary>
-    public static Manifest Read(string token) => Read(token, 
+    public static Manifest Read(string token) => Read(token,
         Variables.InstallationId ??= Guid.NewGuid().ToString("N"), PublicKey);
 
     /// <summary>
