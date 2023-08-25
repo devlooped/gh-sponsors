@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.3.0](https://github.com/devlooped/gh-sponsors/tree/v0.3.0) (2023-08-25)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.2.0...v0.3.0)
+
+:sparkles: Implemented enhancements:
+
+- Create remove command to improve compliance with GDPR [\#17](https://github.com/devlooped/gh-sponsors/issues/17)
+- Create remove command to improve compliance with GDPR [\#18](https://github.com/devlooped/gh-sponsors/pull/18) (@kzu)
+
 ## [v0.2.0](https://github.com/devlooped/gh-sponsors/tree/v0.2.0) (2023-08-24)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.1.4...v0.2.0)
