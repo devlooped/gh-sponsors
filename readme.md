@@ -1,4 +1,4 @@
-# GitHub CLI Sponsors Extension
+# ![](https://github.com/devlooped/SponsorLink/raw/main/assets/img/sponsorlink-32.png) GitHub Sponsors CLI Extension
 
 An extension to the [GitHub CLI](https://cli.github.com/) to manage your 
 sponsorships, sync your [SponsorLink](https://github.com/devlooped/SponsorLink) 
