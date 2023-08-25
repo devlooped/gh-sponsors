@@ -16,6 +16,11 @@ namespace Devlooped.SponsorLink;
 public class Constants
 {
     /// <summary>
+    /// Base64-encoded public key used to verify the manifest JWT token.
+    /// </summary>
+    public const string PublicKey = "MIIBCgKCAQEAo5bLk9Iim5twrxGVzJ4OxfxDuvy3ladTNvcFNv4Hm9/1No89SISKTXZ1bSABTnqH6z/DpklcHveGMSmsncEvUebrg7tX6+M3byVXU6Q/d82PtwgbDXT9d10A4lePS2ioJQqlHWQy/fuNwe7FjptV+yguf5IUxVRdZ77An1IyGUk9Cj6n4RuYIPrP5O0AmFPHOwEzywUWVaV1NHYRe0Th6i5/hyDV13K7+LP9VzwucnWEvzujtnL6ywZDeaKkwfeFsXZyYywHj6oJK9Obed/nu1e+69fmUqprtc0t/3A9uHc0G/0sDNLLAd83j2NSOS2IHJo17azOLFuhekka8dSKnQIDAQAB";
+
+    /// <summary>
     /// Last used access token to invoke SponsorLink backend APIs.
     /// </summary>
     public const string AccessTokenVariable = "SPONSORLINK_TOKEN";
@@ -118,13 +123,7 @@ public class Manifest
 
     static Manifest()
     {
-        using var stream = typeof(Manifest).Assembly
-            .GetManifestResourceStream("Devlooped.SponsorLink.SponsorLink.pub");
-
-        var mem = new MemoryStream((int)stream!.Length);
-        stream.CopyTo(mem);
-
-        PublicKey = CreateRSAFromPublicKey(mem.ToArray());
+        PublicKey = CreateRSAFromPublicKey(Convert.FromBase64String(Constants.PublicKey));
     }
 
 #if NET6_0_OR_GREATER
