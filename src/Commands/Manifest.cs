@@ -16,6 +16,7 @@ namespace Devlooped.SponsorLink;
 /// </summary>
 public class Manifest
 {
+    static readonly SHA256 sha = SHA256.Create();
     readonly string salt;
     readonly HashSet<string> linked;
 
@@ -71,11 +72,11 @@ public class Manifest
     public bool IsSponsoring(string email, string sponsorable)
         => linked.Contains(
                 Convert.ToBase64String(
-                    SHA256.HashData(Encoding.UTF8.GetBytes(salt + email + sponsorable)))) ||
+                    sha.ComputeHash(Encoding.UTF8.GetBytes(salt + email + sponsorable)))) ||
             (email.IndexOf('@') is int index && index > 0 &&
              linked.Contains(
                 Convert.ToBase64String(
-                    SHA256.HashData(Encoding.UTF8.GetBytes(salt + email[(index + 1)..] + sponsorable)))));
+                    sha.ComputeHash(Encoding.UTF8.GetBytes(salt + email[(index + 1)..] + sponsorable)))));
 
     /// <summary>
     /// Gets the expiration date of the current manifest.
@@ -171,7 +172,7 @@ public class Manifest
         {
             foreach (var email in emails)
             {
-                var data = SHA256.HashData(Encoding.UTF8.GetBytes(salt + email + sponsorable));
+                var data = sha.ComputeHash(Encoding.UTF8.GetBytes(salt + email + sponsorable));
                 var hash = Convert.ToBase64String(data);
 
                 linked.Add(hash);
@@ -179,7 +180,7 @@ public class Manifest
 
             foreach (var domain in domains)
             {
-                var data = SHA256.HashData(Encoding.UTF8.GetBytes(salt + domain + sponsorable));
+                var data = sha.ComputeHash(Encoding.UTF8.GetBytes(salt + domain + sponsorable));
                 var hash = Convert.ToBase64String(data);
 
                 linked.Add(hash);
