@@ -21,6 +21,7 @@ namespace Devlooped.SponsorLink;
 /// </summary>
 public static class Session
 {
+    static readonly SHA256 sha = SHA256.Create();
     const string Issuer = "https://sponsorlink.us.auth0.com/";
     const string Audience = "https://sponsorlink.devlooped.com";
 
@@ -73,7 +74,7 @@ public static class Session
 
         var client = new AuthenticationApiClient(new Uri(Issuer));
         var verifier = Guid.NewGuid().ToString("N");
-        var challenge = Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(verifier)));
+        var challenge = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(verifier)));
 
         var uri = client.BuildAuthorizationUrl()
             .WithAudience("https://sponsorlink.devlooped.com")

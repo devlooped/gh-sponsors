@@ -30,6 +30,7 @@ public class CheckCommand : Command<CheckCommand.CheckSettings>
 
     public override int Execute([NotNull] CommandContext context, [NotNull] CheckSettings settings)
     {
+#if NET6_0_OR_GREATER
         // NOTE: we have the Manifest class as well as convenience Variables and Constants classes
         // in this project, but we want this to serve as an example of how to perform the check from
         // anywhere that only has access to the environment variables and SponsorLink public key.
@@ -84,5 +85,9 @@ public class CheckCommand : Command<CheckCommand.CheckSettings>
         }
 
         return 0;
+#else
+        AnsiConsole.MarkupLine("[red]x[/] This command requires .NET 6 or newer.");
+        return -1;
+#endif
     }
 }

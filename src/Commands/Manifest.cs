@@ -68,9 +68,9 @@ public partial class Manifest
     /// </summary>
     static RSA CreateRSAFromPublicKey(byte[] publicKey)
     {
-        var asn1Object = Asn1Object.FromByteArray(publicKey);
-        var publicKeyStructure = RsaPublicKeyStructure.GetInstance(asn1Object);
-        var rsaParameters = new RsaKeyParameters(false, publicKeyStructure.Modulus, publicKeyStructure.PublicExponent);
+        var asn1Object = Org.BouncyCastle.Asn1.Asn1Object.FromByteArray(publicKey);
+        var publicKeyStructure = Org.BouncyCastle.Asn1.X509.RsaPublicKeyStructure.GetInstance(asn1Object);
+        var rsaParameters = new Org.BouncyCastle.Crypto.Parameters.RsaKeyParameters(false, publicKeyStructure.Modulus, publicKeyStructure.PublicExponent);
 
         var rsaParams = new RSAParameters
         {

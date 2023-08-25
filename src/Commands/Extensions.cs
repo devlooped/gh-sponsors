@@ -40,7 +40,12 @@ public static class Extensions
 
             Action<TableColumn>? configure = null;
 
-            if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateOnly))
+            if (prop.PropertyType == typeof(DateTime)
+#if NET6_0_OR_GREATER
+                || prop.PropertyType == typeof(DateOnly))
+#else
+                )
+#endif
                 configure = c => c.Centered();
 
             if (prop.PropertyType == typeof(bool))
@@ -61,8 +66,10 @@ public static class Extensions
                 var value = prop.GetValue(item);
                 if (value is DateTime dt)
                     values.Add(dt.ToString("yyyy-MM-dd HH:mm:ss"));
+#if NET6_0_OR_GREATER
                 else if (value is DateOnly date)
                     values.Add(date.ToString("yyyy-MM-dd"));
+#endif
                 else if (value is bool b)
                     if (b) values.Add("[green]✔[/]");
                     else values.Add("");

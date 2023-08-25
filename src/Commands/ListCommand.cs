@@ -10,7 +10,13 @@ namespace Devlooped.SponsorLink;
 [Description("Lists user and organization sponsorships")]
 public class ListCommand(Account account) : Command
 {
-    record Sponsorship(string Sponsorable, [property: DisplayName("Tier (USD)")] int Dollars, DateOnly CreatedAt, [property: DisplayName("One-time")] bool OneTime);
+    record Sponsorship(string Sponsorable, [property: DisplayName("Tier (USD)")] int Dollars,
+#if NET6_0_OR_GREATER
+        DateOnly CreatedAt,
+#else
+        DateTime CreatedAt,
+#endif
+        [property: DisplayName("One-time")] bool OneTime);
     record Organization(string Login, string[] Sponsorables);
 
     public override int Execute(CommandContext context)
