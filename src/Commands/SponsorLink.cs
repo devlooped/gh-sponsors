@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -201,7 +200,7 @@ public class Manifest
     /// </summary>
     /// <param name="manifest">The read manifest if present and valid.</param>
     /// <returns>The manifest status.</returns>
-    public static Status TryRead([NotNullWhen(true)] out Manifest? manifest)
+    public static Status TryRead(out Manifest? manifest)
     {
         manifest = default;
 
