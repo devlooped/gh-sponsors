@@ -121,10 +121,8 @@ public class Manifest
         Verified,
     }
 
-    static Manifest()
-    {
-        PublicKey = CreateRSAFromPublicKey(Convert.FromBase64String(Constants.PublicKey));
-    }
+    static Manifest() 
+        => PublicKey = CreateRSAFromPublicKey(Convert.FromBase64String(Constants.PublicKey));
 
 #if NET6_0_OR_GREATER
     static RSA CreateRSAFromPublicKey(byte[] publicKey)
