@@ -10,8 +10,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using static Devlooped.SponsorLink;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 [Description("Synchronizes the sponsorships manifest")]
 public partial class SyncCommand(Account user) : AsyncCommand

@@ -6,8 +6,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using static Devlooped.SponsorLink;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 [Description("Removes all user data from the backend and local machine.")]
 public class RemoveCommand : AsyncCommand

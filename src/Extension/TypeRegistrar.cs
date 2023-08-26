@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public sealed class TypeRegistrar(IServiceCollection builder) : ITypeRegistrar
 {

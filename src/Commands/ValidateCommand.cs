@@ -2,8 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using static Devlooped.SponsorLink;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 [Description("Validates the active sponsorships manifest, if any")]
 public partial class ValidateCommand : Command

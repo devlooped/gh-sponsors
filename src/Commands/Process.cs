@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 class Process
 {

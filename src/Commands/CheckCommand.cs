@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -9,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 [Description("Checks whether a given email/domain is sponsoring a given user/org.")]
 public class CheckCommand : Command<CheckCommand.CheckSettings>

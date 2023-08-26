@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
-using Devlooped.SponsorLink;
+using Devlooped.Sponsors;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using static Devlooped.SponsorLink;
 
 if (!GitHub.IsInstalled)
 {

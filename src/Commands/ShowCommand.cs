@@ -3,7 +3,7 @@ using Spectre.Console;
 using Spectre.Console.Cli;
 using Spectre.Console.Json;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public class ShowCommand(Account account) : Command
 {

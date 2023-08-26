@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Spectre.Console;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public class Misc
 {
-    public void SponsorsAscii()
+    public static void SponsorsAscii()
     {
         var heart =
             """        

@@ -6,7 +6,7 @@ using System.Text;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public static class Extensions
 {

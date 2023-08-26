@@ -1,22 +1,24 @@
 ﻿using Spectre.Console;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped;
 
-partial class Variables
+partial class SponsorLink
 {
-
-    /// <summary>
-    /// Clears all environment variables used by SponsorLink.
-    /// </summary>
-    public static void Clear()
+    partial class Variables
     {
-        AccessToken = null;
-        AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.AccessTokenVariable));
+        /// <summary>
+        /// Clears all environment variables used by SponsorLink.
+        /// </summary>
+        public static void Clear()
+        {
+            AccessToken = null;
+            AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.AccessTokenVariable));
 
-        InstallationId = null;
-        AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.InstallationIdVariable));
+            InstallationId = null;
+            AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.InstallationIdVariable));
 
-        Manifest = null;
-        AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.ManifestVariable));
+            Manifest = null;
+            AnsiConsole.MarkupLine(ThisAssembly.Strings.Variables.Cleared(Constants.ManifestVariable));
+        }
     }
 }

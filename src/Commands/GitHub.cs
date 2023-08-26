@@ -2,7 +2,7 @@
 using System;
 using System.Text.Json;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public record Account(int Id, string Login)
 {
