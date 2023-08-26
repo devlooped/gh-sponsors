@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Devlooped.SponsorLink.Commands</AssemblyName>
-    <RootNamespace>Devlooped.SponsorLink</RootNamespace>
+    <AssemblyName>Devlooped.Sponsors.Commands</AssemblyName>
+    <RootNamespace>Devlooped.Sponsors</RootNamespace>
     <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
     <!-- Makes it easier to write code that can be simply sync'ed -->
     <ImplicitUsings>disable</ImplicitUsings>

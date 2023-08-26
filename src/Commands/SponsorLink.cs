@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
@@ -24,6 +23,26 @@ public static partial class SponsorLink
         PublicKey = CreateRSAFromPublicKey(Convert.FromBase64String(Constants.PublicKey));
         Status = Manifest.TryRead(out manifest);
     }
+
+    /// <summary>
+    /// Whether the current process is running in an IDE, either 
+    /// <see cref="IsVisualStudio"/> or <see cref="IsRider"/>.
+    /// </summary>
+    public static bool IsEditor => IsVisualStudio || IsRider;
+
+    /// <summary>
+    /// Whether the current process is running as part of an active Visual Studio instance.
+    /// </summary>
+    public static bool IsVisualStudio =>
+        Environment.GetEnvironmentVariable("ServiceHubLogSessionKey") != null ||
+        Environment.GetEnvironmentVariable("VSAPPIDNAME") != null;
+
+    /// <summary>
+    /// Whether the current process is running as part of an active Rider instance.
+    /// </summary>
+    public static bool IsRider =>
+        Environment.GetEnvironmentVariable("RESHARPER_FUS_SESSION") != null ||
+        Environment.GetEnvironmentVariable("IDEA_INITIAL_DIRECTORY") != null;
 
     /// <summary>
     /// The public key used to validate manifests signed with the default private key.
