@@ -8,8 +8,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using static Devlooped.SponsorLink;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public class Signing(ITestOutputHelper Output)
 {
@@ -17,7 +18,7 @@ public class Signing(ITestOutputHelper Output)
     // NOTE: if you want to run locally the SL Functions App, you need to set the public 
     // key as Base64 encoded string in the SPONSORLINK_KEY environment variable
     //[Fact]
-    public void CreateKeyPair()
+    public static void CreateKeyPair()
     {
         // Generate key pair
         RSA rsa = RSA.Create(2048);
@@ -27,7 +28,7 @@ public class Signing(ITestOutputHelper Output)
     }
 
     [Fact]
-    public void WritePublicKey() => Output.WriteLine(Convert.ToBase64String(Manifest.PublicKey.ExportRSAPublicKey()));
+    public void WritePublicKey() => Output.WriteLine(Convert.ToBase64String(PublicKey.ExportRSAPublicKey()));
 
     [Fact]
     public void SignFile()

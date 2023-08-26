@@ -13,8 +13,9 @@ using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
+using static Devlooped.SponsorLink;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 /// <summary>
 /// Manages session token, authentication and installation ininitialization.

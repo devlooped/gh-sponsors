@@ -5,8 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using static Devlooped.SponsorLink;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 public class ManifestTests(ITestOutputHelper Output)
 {

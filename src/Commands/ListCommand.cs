@@ -5,7 +5,7 @@ using System.Text.Json;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Devlooped.SponsorLink;
+namespace Devlooped.Sponsors;
 
 [Description("Lists user and organization sponsorships")]
 public class ListCommand(Account account) : Command
