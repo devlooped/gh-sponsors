@@ -177,8 +177,17 @@ public partial class SyncCommand(Account user) : AsyncCommand
         {
             var node = new TreeNode(new Text(user.Login, new Style(Color.Blue)));
             node.AddNodes(usersponsored);
+
+            if (usercontribs.Count > 0)
+            {
+                var contrib = new TreeNode(new Text("contributed to", new Style(Color.Green)));
+                contrib.AddNodes(usercontribs);
+                node.AddNode(contrib);
+            }
+
             tree.AddNode(node);
         }
+
 
         foreach (var org in orgsponsors)
         {
