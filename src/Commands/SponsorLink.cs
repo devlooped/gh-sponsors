@@ -25,26 +25,6 @@ public static partial class SponsorLink
     }
 
     /// <summary>
-    /// Whether the current process is running in an IDE, either 
-    /// <see cref="IsVisualStudio"/> or <see cref="IsRider"/>.
-    /// </summary>
-    public static bool IsEditor => IsVisualStudio || IsRider;
-
-    /// <summary>
-    /// Whether the current process is running as part of an active Visual Studio instance.
-    /// </summary>
-    public static bool IsVisualStudio =>
-        Environment.GetEnvironmentVariable("ServiceHubLogSessionKey") != null ||
-        Environment.GetEnvironmentVariable("VSAPPIDNAME") != null;
-
-    /// <summary>
-    /// Whether the current process is running as part of an active Rider instance.
-    /// </summary>
-    public static bool IsRider =>
-        Environment.GetEnvironmentVariable("RESHARPER_FUS_SESSION") != null ||
-        Environment.GetEnvironmentVariable("IDEA_INITIAL_DIRECTORY") != null;
-
-    /// <summary>
     /// The public key used to validate manifests signed with the default private key.
     /// </summary>
     public static RSA PublicKey { get; }
@@ -55,7 +35,8 @@ public static partial class SponsorLink
     public static ManifestStatus Status { get; } = ManifestStatus.NotFound;
 
     /// <summary>
-    /// Checks whether the given email is sponsoring the given sponsorable account.
+    /// Checks whether the given user (represented somehow by a string, might 
+    /// be a user identifier an email, etc.) is sponsoring the given sponsorable account.
     /// </summary>
     /// <returns>
     /// <see langword="null"/> if sponsoring status cannot be determined (i.e. 
@@ -63,8 +44,8 @@ public static partial class SponsorLink
     /// Otherwise, <see langword="true"/> if the email is sponsoring the sponsorable 
     /// account, or <see langword="false"/> otherwise.
     /// </returns>
-    public static bool? IsSponsoring(string email, string sponsorable)
-        => manifest?.IsSponsoring(email, sponsorable);
+    public static bool? IsSponsoring(string user, string sponsorable)
+        => manifest?.IsSponsoring(user, sponsorable);
 
 #if NET6_0_OR_GREATER
     static RSA CreateRSAFromPublicKey(byte[] publicKey)
@@ -213,16 +194,18 @@ public static partial class SponsorLink
             => (Token, this.salt, this.hashes) = (jwt, salt, hashes);
 
         /// <summary>
-        /// Checks whether the given email is sponsoring the given sponsorable account.
+        /// Checks whether the given user (represented somehow by a string, might 
+        /// be a user identifier an email, etc.) is sponsoring the given sponsorable account.
         /// </summary>
-        public bool IsSponsoring(string email, string sponsorable)
+        public bool IsSponsoring(string user, string sponsorable)
             => hashes.Contains(
                     Convert.ToBase64String(
-                        sha.ComputeHash(Encoding.UTF8.GetBytes(salt + email + sponsorable)))) ||
-                (email.IndexOf('@') is int index && index > 0 &&
+                        sha.ComputeHash(Encoding.UTF8.GetBytes(salt + user + sponsorable)))) ||
+                // If the user string contains an @ sign, we can test for the domain for org-wide sponsorships.
+                (user.IndexOf('@') is int index && index > 0 &&
                  hashes.Contains(
                     Convert.ToBase64String(
-                        sha.ComputeHash(Encoding.UTF8.GetBytes(salt + email[(index + 1)..] + sponsorable)))));
+                        sha.ComputeHash(Encoding.UTF8.GetBytes(salt + user[(index + 1)..] + sponsorable)))));
 
         /// <summary>
         /// Gets the expiration date of the current manifest.
