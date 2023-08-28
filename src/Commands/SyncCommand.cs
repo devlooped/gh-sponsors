@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SharpYaml;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using static Devlooped.SponsorLink;
@@ -45,30 +46,12 @@ public partial class SyncCommand(Account user) : AsyncCommand
         // TODO: we'll need to account for pagination after 100 sponsorships is commonplace :)
         if (status.Start("Querying user sponsorships", _ =>
         {
-            if (!GitHub.TryQuery(
-                """
-                query { 
-                  viewer { 
-                    sponsorshipsAsSponsor(activeOnly: true, first: 100, orderBy: {field: CREATED_AT, direction: ASC}) {
-                      nodes {
-                         sponsorable {
-                           ... on Organization {
-                             login
-                           }
-                           ... on User {
-                             login
-                           }
-                         }        
-                      }
-                    }
-                  }
-                }
-                """,
+            if (!GitHub.TryQuery(GraphQL.UserSponsorships,
                 """
                 [.data.viewer.sponsorshipsAsSponsor.nodes.[].sponsorable.login]
                 """, out json) || string.IsNullOrEmpty(json))
             {
-                AnsiConsole.MarkupLine("[red]Could not query GitHub for user sponsorships.");
+                AnsiConsole.MarkupLine("[red]x[/] Could not query GitHub for user sponsorships.");
                 return -1;
             }
             return 0;
@@ -78,30 +61,17 @@ public partial class SyncCommand(Account user) : AsyncCommand
         }
 
         var usersponsored = JsonSerializer.Deserialize<HashSet<string>>(json!, JsonOptions.Default) ?? new HashSet<string>();
+        var usercontribs = await GetUserContributions();
 
         // It's unlikely that any account would belong to more than 100 orgs.
         if (status.Start("Querying user organizations", _ =>
         {
-            if (!GitHub.TryQuery(
-                """
-                query { 
-                  viewer { 
-                    organizations(first: 100) {
-                      nodes {
-                        login
-                        isVerified
-                        email
-                        websiteUrl
-                      }
-                    }
-                  }
-                }
-                """,
+            if (!GitHub.TryQuery(GraphQL.UserOrganizations,
                 """
                 [.data.viewer.organizations.nodes.[] | select(.isVerified == true)]
                 """, out json) || string.IsNullOrEmpty(json))
             {
-                AnsiConsole.MarkupLine("[red]Could not query GitHub for user organizations.");
+                AnsiConsole.MarkupLine("[red]x[/] Could not query GitHub for user organizations.");
                 return -1;
             }
             return 0;
@@ -141,25 +111,7 @@ public partial class SyncCommand(Account user) : AsyncCommand
                 ctx.Status($"Querying {org.Login} sponsorships");
 
                 // TODO: we'll need to account for pagination after 100 sponsorships is commonplace :)
-                if (GitHub.TryQuery(
-                    $$"""
-                    query($login: String!) { 
-                      organization(login: $login) { 
-                        sponsorshipsAsSponsor(activeOnly: true, first: 100) {
-                          nodes {
-                             sponsorable {
-                               ... on Organization {
-                                 login
-                               }
-                               ... on User {
-                                 login
-                               }
-                             }        
-                          }
-                        }
-                      }
-                    }
-                    """,
+                if (GitHub.TryQuery(GraphQL.OrganizationSponsorships,
                     """
                     [.data.organization.sponsorshipsAsSponsor.nodes.[].sponsorable.login]
                     """, out json, ("login", org.Login)) &&
@@ -177,17 +129,17 @@ public partial class SyncCommand(Account user) : AsyncCommand
         });
 
         // If we end up with no sponsorships whatesover, no-op and exit.
-        if (usersponsored.Count == 0 && orgsponsored.Count == 0)
+        if (usersponsored.Count == 0 && orgsponsored.Count == 0 && usercontribs.Count == 0)
         {
-            AnsiConsole.MarkupLine($"[yellow]![/] User {user.Login} (or any of the organizations they long to) is not currently sponsoring any accounts.");
+            AnsiConsole.MarkupLine($"[yellow]![/] User {user.Login} (or any of the organizations they long to) is not currently sponsoring any accounts, or contributing to any sponsorable repositories.");
             return 0;
         }
 
-        AnsiConsole.MarkupLine($"[green]✓[/] Found {usersponsored.Count} personal sponsorships and {orgsponsored.Count} organization sponsorships.");
+        AnsiConsole.MarkupLine($"[green]✓[/] Found {usersponsored.Count} personal sponsorships, {usercontribs.Count} indirect sponsorships via contributions, and {orgsponsored.Count} organization sponsorships.");
 
         // Create unsigned manifest locally, for back-end validation
         var manifest = Manifest.Create(Session.InstallationId, user.Id.ToString(), user.Emails, domains.ToArray(),
-            new HashSet<string>(usersponsored.Concat(orgsponsored)).ToArray());
+            new HashSet<string>(usersponsored.Concat(orgsponsored).Concat(usercontribs)).ToArray());
 
         using var http = new HttpClient();
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Variables.AccessToken);
@@ -238,5 +190,95 @@ public partial class SyncCommand(Account user) : AsyncCommand
         AnsiConsole.Write(tree);
 
         return 0;
+    }
+
+    /// <summary>
+    /// Accounts current user contributions to sponsorable repos as a sponsorship. 
+    /// This makes sense since otherwise, active contributors would still need to 
+    /// sponsor the repo sponsorables to get access to the sponsor benefits.
+    /// </summary>
+    async Task<HashSet<string>> GetUserContributions() => await AnsiConsole.Status().StartAsync("Querying user contributions", async ctx =>
+    {
+        var contributed = new HashSet<string>();
+        string? json = default;
+
+        if (!GitHub.TryQuery(GraphQL.UserContributions,
+            """
+            [.data.viewer.repositoriesContributedTo.nodes.[].nameWithOwner]
+            """, out json) || string.IsNullOrEmpty(json))
+        {
+            AnsiConsole.MarkupLine("[red]x[/] Could not query GitHub for user sponsorships.");
+            return contributed;
+        }
+
+        // Keeps the orgs we have already checked for org-wide funding options
+        var checkedorgs = new HashSet<string>();
+        var serializer = new SharpYaml.Serialization.Serializer(new SharpYaml.Serialization.SerializerSettings
+        {
+            IgnoreUnmatchedProperties = true,
+        });
+        using var http = new HttpClient();
+
+        async Task AddContributedAsync(string ownerRepo)
+        {
+            // First try a repo-level funding file
+            if (await http!.GetAsync($"https://github.com/{ownerRepo}/raw/main/.github/FUNDING.yml") is { IsSuccessStatusCode: true } repoFunding)
+            {
+                var yml = await repoFunding.Content.ReadAsStringAsync();
+                try
+                {
+                    if (serializer!.Deserialize<SingleSponsorable>(yml) is { github: not null } single)
+                    {
+                        contributed?.Add(single.github);
+                    }
+                }
+                catch (YamlException)
+                {
+                    try
+                    {
+                        if (serializer!.Deserialize<MultipleSponsorable>(yml) is { github.Length: > 0 } multiple)
+                        {
+                            foreach (var account in multiple.github)
+                            {
+                                contributed?.Add(account);
+                            }
+                        }
+                    }
+                    catch (YamlException) { }
+                }
+            }
+        }
+
+        foreach (var ownerRepo in JsonSerializer.Deserialize<string[]>(json, JsonOptions.Default) ?? Array.Empty<string>())
+        {
+            var parts = ownerRepo.Split('/');
+            if (parts.Length != 2)
+                continue;
+
+            var owner = parts[0];
+            var repo = parts[1];
+
+            ctx.Status($"Discovering {ownerRepo} funding options");
+
+            await AddContributedAsync(ownerRepo);
+
+            if (checkedorgs.Contains(owner))
+                continue;
+
+            await AddContributedAsync(owner + "/.github");
+            checkedorgs.Add(owner);
+        }
+
+        return contributed;
+    });
+
+    record SingleSponsorable
+    {
+        public string? github { get; init; }
+    }
+
+    record MultipleSponsorable
+    {
+        public string[]? github { get; init; }
     }
 }
