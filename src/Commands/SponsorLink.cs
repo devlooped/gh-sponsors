@@ -44,8 +44,8 @@ public static partial class SponsorLink
     /// Otherwise, <see langword="true"/> if the email is sponsoring the sponsorable 
     /// account, or <see langword="false"/> otherwise.
     /// </returns>
-    public static bool? IsSponsoring(string user, string sponsorable)
-        => manifest?.IsSponsoring(user, sponsorable);
+    public static bool? Contains(string user, string sponsorable)
+        => manifest?.Contains(user, sponsorable);
 
 #if NET6_0_OR_GREATER
     static RSA CreateRSAFromPublicKey(byte[] publicKey)
@@ -197,7 +197,7 @@ public static partial class SponsorLink
         /// Checks whether the given user (represented somehow by a string, might 
         /// be a user identifier an email, etc.) is sponsoring the given sponsorable account.
         /// </summary>
-        public bool IsSponsoring(string user, string sponsorable)
+        public bool Contains(string user, string sponsorable)
             => hashes.Contains(
                     Convert.ToBase64String(
                         sha.ComputeHash(Encoding.UTF8.GetBytes(salt + user + sponsorable)))) ||

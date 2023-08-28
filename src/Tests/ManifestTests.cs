@@ -36,13 +36,13 @@ public class ManifestTests(ITestOutputHelper Output)
         var validated = Manifest.Read(signed, salt, pub);
 
         // Direct sponsoring
-        Assert.True(validated.IsSponsoring("foo@bar.com", "devlooped"));
+        Assert.True(validated.Contains("foo@bar.com", "devlooped"));
         // Org sponsoring (via sponsoring domain)
-        Assert.True(validated.IsSponsoring("baz@bar.com", "devlooped"));
+        Assert.True(validated.Contains("baz@bar.com", "devlooped"));
 
         // Wrong sponsorable
-        Assert.False(validated.IsSponsoring("foo@bar.com", "dotnet"));
+        Assert.False(validated.Contains("foo@bar.com", "dotnet"));
         // Wrong email domain
-        Assert.False(validated.IsSponsoring("foo@contoso.com", "devlooped"));
+        Assert.False(validated.Contains("foo@contoso.com", "devlooped"));
     }
 }
