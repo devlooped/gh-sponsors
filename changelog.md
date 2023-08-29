@@ -1,5 +1,21 @@
 # Changelog
 
+## [v0.3.2](https://github.com/devlooped/gh-sponsors/tree/v0.3.2) (2023-08-29)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.3.1...v0.3.2)
+
+:sparkles: Implemented enhancements:
+
+- Consider contributed sponsorable repos as sponsored [\#26](https://github.com/devlooped/gh-sponsors/pull/26) (@kzu)
+- Add convenience properties to check for IDE [\#24](https://github.com/devlooped/gh-sponsors/pull/24) (@kzu)
+- Further simplify embeddability of SL single-file [\#23](https://github.com/devlooped/gh-sponsors/pull/23) (@kzu)
+- Use a simple constant to hold the public key base64 [\#22](https://github.com/devlooped/gh-sponsors/pull/22) (@kzu)
+- Provide single-file import of relevant manifest code for integrators [\#21](https://github.com/devlooped/gh-sponsors/pull/21) (@kzu)
+
+:twisted_rightwards_arrows: Merged:
+
+- Remove IDE/Editor concerns from the CLI repo [\#25](https://github.com/devlooped/gh-sponsors/pull/25) (@kzu)
+
 ## [v0.3.1](https://github.com/devlooped/gh-sponsors/tree/v0.3.1) (2023-08-25)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.3.0...v0.3.1)
@@ -14,7 +30,6 @@
 
 :sparkles: Implemented enhancements:
 
-- Create remove command to improve compliance with GDPR [\#17](https://github.com/devlooped/gh-sponsors/issues/17)
 - Create remove command to improve compliance with GDPR [\#18](https://github.com/devlooped/gh-sponsors/pull/18) (@kzu)
 
 ## [v0.2.0](https://github.com/devlooped/gh-sponsors/tree/v0.2.0) (2023-08-24)
@@ -23,8 +38,6 @@
 
 :sparkles: Implemented enhancements:
 
-- Drop base62, switch to more common base64 hash encoding [\#13](https://github.com/devlooped/gh-sponsors/issues/13)
-- Create check command, which performs same action as a build task/analyzer would [\#12](https://github.com/devlooped/gh-sponsors/issues/12)
 - Create check command, which performs same action as a build task/analyzer [\#16](https://github.com/devlooped/gh-sponsors/pull/16) (@kzu)
 - Drop base62, switch to more common base64 hash encoding [\#14](https://github.com/devlooped/gh-sponsors/pull/14) (@kzu)
 - Add first-run experience, with some explanations [\#11](https://github.com/devlooped/gh-sponsors/pull/11) (@kzu)
