@@ -50,6 +50,10 @@ Available commands:
 
 > NOTE: running `gh sponsors` invokes the `sync` command.
 
+## Issues
+
+Please report issues on the [devlooped/SponsorLink](https://github.com/devlooped/SponsorLink/issues) 
+repository.
 
 ## How it works
 
