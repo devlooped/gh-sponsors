@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.4.0](https://github.com/devlooped/gh-sponsors/tree/v0.4.0) (2023-08-30)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.3.2...v0.4.0)
+
+:sparkles: Implemented enhancements:
+
+- Use JWT-native rendering rather than claims [\#34](https://github.com/devlooped/gh-sponsors/pull/34) (@kzu)
+- Add `view` command that shows all backend info [\#33](https://github.com/devlooped/gh-sponsors/pull/33) (@kzu)
+
+:twisted_rightwards_arrows: Merged:
+
+- Simplify extension name for upgrade/remove [\#32](https://github.com/devlooped/gh-sponsors/pull/32) (@kzu)
+
 ## [v0.3.2](https://github.com/devlooped/gh-sponsors/tree/v0.3.2) (2023-08-29)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.3.1...v0.3.2)
