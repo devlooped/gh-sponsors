@@ -47,6 +47,9 @@ Available commands:
 * `gh sponsors validate`: checks if the current manifest is valid and not expired.
 * `gh sponsors remove`: removes all associated environment variables and backend 
   information for the current user.
+* `gh sponsors view`: view the backend information for the current user, as 
+  claims provided by Auth0 after authenticating with your GitHub account, which 
+  is the only information kept.
 
 > NOTE: running `gh sponsors` invokes the `sync` command.
 

@@ -17,6 +17,9 @@ static class JsonOptions
             AllowTrailingCommas = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             ReadCommentHandling = JsonCommentHandling.Skip,
+#if NET6_0_OR_GREATER
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+#endif
             WriteIndented = true,
             Converters =
         {
