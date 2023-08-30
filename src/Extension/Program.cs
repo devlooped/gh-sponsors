@@ -81,6 +81,7 @@ app.Configure(config =>
     config.AddCommand<RemoveCommand>();
     config.AddCommand<SyncCommand>();
     config.AddCommand<ValidateCommand>();
+    config.AddCommand<ViewCommand>();
     config.AddCommand<WelcomeCommand>();
 
 #if DEBUG
@@ -100,6 +101,7 @@ if (args.Length == 0)
                 "list",
                 "sync",
                 "validate",
+                "view",
                 "welcome",
             }));
 
