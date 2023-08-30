@@ -17,13 +17,13 @@ gh extension install devlooped/gh-sponsors
 Upgrade:
 
 ```shell
-gh extension upgrade devlooped/gh-sponsors
+gh extension upgrade sponsors
 ```
 
 Uninstall:
 
 ```shell
-gh extension remove devlooped/gh-sponsors
+gh extension remove sponsors
 ```
 
 The extension uses the [GitHub CLI API](https://cli.github.com/manual/gh_api) to 
