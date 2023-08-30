@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Spectre.Console;
@@ -25,7 +28,7 @@ public class ViewCommand : AsyncCommand
             if (principal == null)
                 return -1;
 
-           return Render(Variables.AccessToken);
+            return Render(Variables.AccessToken);
         }
     }
 
@@ -38,8 +41,25 @@ public class ViewCommand : AsyncCommand
         var jwt = handler.ReadJwtToken(token);
         var json = JsonSerializer.Serialize(jwt, JsonOptions.Default);
 
+        var mem = new MemoryStream();
+        var writer = new Utf8JsonWriter(mem);
+        writer.WriteStartObject();
+
+        var doc = JsonDocument.Parse(json);
+        // Cleanup a bit by removing the raw and encoded properties which are 
+        // already included in the token as human readable values already.
+        var raw = doc.RootElement.EnumerateObject().Where(x =>
+            !x.Name.StartsWith("raw") && !x.Name.StartsWith("encoded"));
+
+        foreach (var node in raw)
+            node.WriteTo(writer);
+
+        writer.WriteEndObject();
+        writer.Flush();
+        mem.Position = 0;
+
         AnsiConsole.Write(
-            new Panel(new JsonText(json))
+            new Panel(new JsonText(Encoding.UTF8.GetString(mem.ToArray())))
                 .Header("Auth0 Token")
                 .Collapse()
                 .RoundedBorder()
