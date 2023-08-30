@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using JWT.Builder;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Spectre.Console.Json;
@@ -12,14 +13,14 @@ using static Devlooped.SponsorLink;
 
 namespace Devlooped.Sponsors;
 
-[Description("View the information the backend contains about the authenticated user")]
+[Description("View the information the backend contains about the authenticated user and the local manifest")]
 public class ViewCommand : AsyncCommand
 {
     public override async Task<int> ExecuteAsync(CommandContext context)
     {
         if (Variables.AccessToken is string token)
         {
-            return Render(token);
+            Render("Auth0 Token", token);
         }
         else
         {
@@ -28,39 +29,27 @@ public class ViewCommand : AsyncCommand
             if (principal == null)
                 return -1;
 
-            return Render(Variables.AccessToken);
+            Render("Auth0 Token", Variables.AccessToken);
         }
+
+        if (Variables.Manifest is string manifest)
+        {
+            Render("SponsorLink Manifest", manifest);
+        }
+
+        return 0;
     }
 
-    int Render(string? token)
+    int Render(string header, string? token)
     {
         if (token is null)
             return -1;
 
-        var handler = new JwtSecurityTokenHandler();
-        var jwt = handler.ReadJwtToken(token);
-        var json = JsonSerializer.Serialize(jwt, JsonOptions.Default);
-
-        var mem = new MemoryStream();
-        var writer = new Utf8JsonWriter(mem);
-        writer.WriteStartObject();
-
-        var doc = JsonDocument.Parse(json);
-        // Cleanup a bit by removing the raw and encoded properties which are 
-        // already included in the token as human readable values already.
-        var raw = doc.RootElement.EnumerateObject().Where(x =>
-            !x.Name.StartsWith("raw") && !x.Name.StartsWith("encoded"));
-
-        foreach (var node in raw)
-            node.WriteTo(writer);
-
-        writer.WriteEndObject();
-        writer.Flush();
-        mem.Position = 0;
+        var json = JwtBuilder.Create().DoNotVerifySignature().Decode(token);
 
         AnsiConsole.Write(
-            new Panel(new JsonText(Encoding.UTF8.GetString(mem.ToArray())))
-                .Header("Auth0 Token")
+            new Panel(new JsonText(json))
+                .Header(header)
                 .Collapse()
                 .RoundedBorder()
                 .BorderColor(Color.Green));
