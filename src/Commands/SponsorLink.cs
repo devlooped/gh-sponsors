@@ -47,7 +47,7 @@ public static partial class SponsorLink
     public static bool? Contains(string user, string sponsorable)
         => manifest?.Contains(user, sponsorable);
 
-#if NET6_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
     static RSA CreateRSAFromPublicKey(byte[] publicKey)
     {
         var rsa = RSA.Create();
