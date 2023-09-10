@@ -53,12 +53,24 @@ public class CheckCommand : Command<CheckCommand.CheckSettings>
             RequireExpirationTime = true,
             ValidAudience = "SponsorLink",
             ValidIssuer = "Devlooped",
+            // NOTE: setting this to false allows checking sponsorships even when the manifest is expired. 
+            // This might be useful if package authors want to extend the manifest lifetime beyond the default 
+            // 30 days and issue a warning on expiration, rather than an error and a forced sync.
+            // If this is not set (or true), the catch for SecurityTokenExpiredException will be hit instead.
+            ValidateLifetime = false,
             IssuerSigningKey = new RsaSecurityKey(rsa)
         };
 
         try
         {
             var principal = new JwtSecurityTokenHandler().ValidateToken(manifest, validation, out var securityToken);
+
+            if (securityToken.ValidTo < DateTime.UtcNow)
+            {
+                AnsiConsole.MarkupLine("$[red]x[/] The manifest expired on {securityToken.ValidTo:yyyy-MM-dd}. Run [yellow]gh sponsors[/] to refresh.");
+                return -2;
+            }
+
             var hash = Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(installation + settings.Email + settings.Sponsorable)));
             if (principal.Claims.Any(c => c.Type == "hash" && c.Value == hash))
             {
