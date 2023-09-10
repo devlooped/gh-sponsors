@@ -12,6 +12,30 @@ namespace Devlooped.Sponsors;
 public class ManifestTests(ITestOutputHelper Output)
 {
     [Fact]
+    public void WhenReadingExpiredManifest_ThenCanStillCheckHashes()
+    {
+        var rsa = RSA.Create();
+        rsa.ImportRSAPrivateKey(File.ReadAllBytes(@"../../../test.key"), out var bytes);
+
+        // Ensure we read the key
+        Assert.NotEqual(0, bytes);
+
+        var salt = Guid.NewGuid().ToString("N");
+
+        var manifest = Manifest.Create(salt,
+            "123", new[] { "foo@bar.com" }, new[] { "bar.com" }, new[] { "devlooped" },
+            DateTime.Now.Subtract(TimeSpan.FromDays(30)));
+
+        var jwt = manifest.Sign(rsa);
+
+        var status = Manifest.TryRead(out var value, rsa, jwt, salt);
+        Assert.Equal(ManifestStatus.Expired, status);
+        Assert.NotNull(value);
+
+        Assert.True(value.Contains("foo@bar.com", "devlooped"));
+    }
+
+    [Fact]
     public void EndToEnd()
     {
         var key = RSA.Create();
