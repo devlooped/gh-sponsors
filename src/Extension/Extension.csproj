@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>gh-sponsors</AssemblyName>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <RuntimeIdentifiers>win10-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>
+    <TargetFramework>net8.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>
     <LocalDev>false</LocalDev>
     <LocalDev Condition="Exists('..\..\..\SponsorLink\src\Commands\Commands.csproj')">true</LocalDev>
   </PropertyGroup>
