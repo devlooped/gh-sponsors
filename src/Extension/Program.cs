@@ -13,7 +13,7 @@ if (!GitHub.IsInstalled)
 
 // If we don't have an installation id, we need to run the first-run experience
 if (Variables.InstallationId is null)
-    args = new[] { "welcome" };
+    args = ["welcome"];
 
 if (GitHub.Authenticate() is not { } account)
 {
@@ -76,6 +76,7 @@ app.Configure(config =>
     // Change so it matches the actual user experience as a GH CLI extension
     config.SetApplicationName("gh sponsors");
 
+    config.AddCommand<InitCommand>();
     config.AddCommand<CheckCommand>();
     config.AddCommand<ListCommand>();
     config.AddCommand<RemoveCommand>();
@@ -96,16 +97,17 @@ if (args.Length == 0)
     var command = AnsiConsole.Prompt(
         new SelectionPrompt<string>()
             .Title("Command to run:")
-            .AddChoices(new[]
-            {
+            .AddChoices(
+            [
+                "init",
                 "list",
                 "sync",
                 "validate",
                 "view",
                 "welcome",
-            }));
+            ]));
 
-    args = new[] { command };
+    args = [command];
 }
 #endif
 

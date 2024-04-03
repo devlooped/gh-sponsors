@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <RootNamespace>Devlooped.SponsorLink</RootNamespace>
+    <RootNamespace>Devlooped.Sponsors</RootNamespace>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <ImplicitUsings>true</ImplicitUsings>
     <LangVersion>preview</LangVersion>
