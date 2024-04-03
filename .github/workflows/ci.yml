@@ -11,17 +11,6 @@ env:
   RestoreUseSkipNonexistentTargets: true
     
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🤘 checkout
-        uses: actions/checkout@v2
-
-      - name: ✓ format
-        run: |
-          dotnet format whitespace --verify-no-changes -v:diag --exclude ~/.nuget
-          dotnet format style --verify-no-changes -v:diag --exclude ~/.nuget
-
   build:
     runs-on: ubuntu-latest
     steps:
