@@ -5,17 +5,20 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RuntimeIdentifiers>win10-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>
+    <LocalDev>false</LocalDev>
+    <LocalDev Condition="Exists('..\..\..\SponsorLink\src\Commands\Commands.csproj')">true</LocalDev>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Auth0.AuthenticationApi" Version="7.22.3" />
+    <PackageReference Include="Auth0.AuthenticationApi" Version="7.26.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.47.0" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Commands\Commands.csproj" />
+    <ProjectReference Condition="$(LocalDev)" Include="..\..\..\SponsorLink\src\Commands\Commands.csproj" />
+    <ProjectReference Condition="!$(LocalDev)" Include="..\Commands\Commands.csproj" />
   </ItemGroup>
 
   <Target Name="_RemoveCulturedResxFromStrings" AfterTargets="_InjectRexAdditionalFiles;_InjectResxAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
