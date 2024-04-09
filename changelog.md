@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.5.0-alpha](https://github.com/devlooped/gh-sponsors/tree/v0.5.0-alpha) (2024-04-09)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.4.0...v0.5.0-alpha)
+
+:sparkles: Implemented enhancements:
+
+- Make sure manifest can be read even if expired [\#44](https://github.com/devlooped/gh-sponsors/pull/44) (@kzu)
+- Use native API from lowest possible TF [\#38](https://github.com/devlooped/gh-sponsors/pull/38) (@kzu)
+
+:twisted_rightwards_arrows: Merged:
+
+- Move to standalone manifests \(JWT\) and code exclusively in SponsorLink repo [\#92](https://github.com/devlooped/gh-sponsors/pull/92) (@kzu)
+
 ## [v0.4.0](https://github.com/devlooped/gh-sponsors/tree/v0.4.0) (2023-08-30)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.3.2...v0.4.0)
