@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Devlooped.Sponsors;
+﻿using Devlooped.Sponsors;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -11,8 +10,7 @@ if (!GitHub.IsInstalled)
     return -1;
 }
 
-// If we don't have an installation id, we need to run the first-run experience
-if (Variables.InstallationId is null)
+if (!Variables.FirstRunCompleted)
     args = ["welcome"];
 
 if (GitHub.Authenticate() is not { } account)
@@ -23,7 +21,7 @@ if (GitHub.Authenticate() is not { } account)
         return -1;
     }
 
-    var process = Process.Start("gh", "auth login");
+    var process = System.Diagnostics.Process.Start("gh", "auth login");
 
     process.WaitForExit();
     if (process.ExitCode != 0)
@@ -41,7 +39,7 @@ else if (account.Emails.Length == 0)
 {
     if (AnsiConsole.Confirm(ThisAssembly.Strings.GitHub.UserScope))
     {
-        var process = Process.Start("gh", "auth refresh -h github.com -s user");
+        var process = System.Diagnostics.Process.Start("gh", "auth refresh -h github.com -s user");
         process.WaitForExit();
         if (process.ExitCode != 0)
             return process.ExitCode;
@@ -58,7 +56,7 @@ else if (account.Emails.Length == 0)
     else
     {
         AnsiConsole.MarkupLine("[red]x[/] Could not retrieve authenticated user's email(s). This is required to sync your sponsorship manifest.");
-        AnsiConsole.MarkupLine("[grey]-[/] Please run [yellow]gh auth refresh - h github.com - s user[/] to enable 'user' scope and fix that manually.");
+        AnsiConsole.MarkupLine("[grey]-[/] Please run [yellow]gh auth refresh -h github.com -s user[/] to enable 'user' scope and fix that manually.");
         return -1;
     }
 }
@@ -73,20 +71,15 @@ registrations.AddSingleton<ICommandApp>(app);
 
 app.Configure(config =>
 {
+#if GH
     // Change so it matches the actual user experience as a GH CLI extension
     config.SetApplicationName("gh sponsors");
+#endif
 
     config.AddCommand<InitCommand>();
-    config.AddCommand<CheckCommand>();
-    config.AddCommand<ListCommand>();
-    config.AddCommand<RemoveCommand>();
-    config.AddCommand<SyncCommand>();
-    config.AddCommand<ValidateCommand>();
-    config.AddCommand<ViewCommand>();
     config.AddCommand<WelcomeCommand>();
 
 #if DEBUG
-    //config.PropagateExceptions();
     config.ValidateExamples();
 #endif
 });
@@ -100,10 +93,6 @@ if (args.Length == 0)
             .AddChoices(
             [
                 "init",
-                "list",
-                "sync",
-                "validate",
-                "view",
                 "welcome",
             ]));
 

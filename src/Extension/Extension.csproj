@@ -5,27 +5,16 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <RuntimeIdentifiers>win-x64;osx-x64;osx-arm64;linux-x64</RuntimeIdentifiers>
-    <LocalDev>false</LocalDev>
-    <LocalDev Condition="Exists('..\..\..\SponsorLink\src\Commands\Commands.csproj')">true</LocalDev>
+    <DefineConstants>GH;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Auth0.AuthenticationApi" Version="7.26.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.47.0" PrivateAssets="all" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
+    <PackageReference Include="Devlooped.Sponsors.Commands" Version="42.42.409-main" />
+    <PackageReference Include="Devlooped.Sponsors.Core" Version="42.42.409-main" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Condition="$(LocalDev)" Include="..\..\..\SponsorLink\src\Commands\Commands.csproj" />
-    <ProjectReference Condition="!$(LocalDev)" Include="..\Commands\Commands.csproj" />
-  </ItemGroup>
-
-  <Target Name="_RemoveCulturedResxFromStrings" AfterTargets="_InjectRexAdditionalFiles;_InjectResxAdditionalFiles" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
-    <ItemGroup>
-      <ResxCode Remove="@(ResxCode -&gt; WithMetadataValue('WithCulture', 'true'))" />
-      <AdditionalFiles Remove="@(AdditionalFiles -&gt; WithMetadataValue('WithCulture', 'true'))" />
-    </ItemGroup>
-  </Target>
 
 </Project>

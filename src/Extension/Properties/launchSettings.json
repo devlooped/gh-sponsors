@@ -2,7 +2,7 @@
   "profiles": {
     "Extension": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "init https://sponsorlink.devlooped.com a82350fb2bae407b3021 --audience devlooped"
     }
   }
 }
