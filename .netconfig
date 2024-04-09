@@ -2,8 +2,8 @@
 	url = https://github.com/devlooped/oss
 [file ".gitignore"]
 	url = https://github.com/devlooped/oss/blob/main/.gitignore
-	sha = 4bd702593c10df189cd4a0f6e6fb72e55de02198
-	etag = f11dcc8c057bd2f526aa9c7090c9568d1656fafaaedc6719da42a00283018ffa
+	sha = 02811fa23b0a102b9b33048335d41e515bf75737
+	etag = a9c37ae312afac14b78436a7d018af4483d88736b5f780576f2c5a0b3f14998c
 	weak
 [file ".gitattributes"]
 	url = https://github.com/devlooped/oss/blob/main/.gitattributes
@@ -26,8 +26,8 @@
 	skip
 [file ".github/dependabot.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/dependabot.yml
-	sha = 35ca3f3405452465058d89005f8a88a65847c377
-	etag = f8080f8f04d87529e90d9a66751d304a7141196fb9734aa2d110784e52e66898
+	sha = 49661dbf0720cde93eb5569be7523b5912351560
+	etag = c147ea2f3431ca0338c315c4a45b56ee233c4d30f8d6ab698d0e1980a257fd6a
 	weak
 [file ".github/release.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/release.yml
@@ -91,8 +91,8 @@
 	weak
 [file "src/Directory.Build.props"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.props
-	sha = 1bf1eacc7ac3920d52c8e7045bfa34abc7c05302
-	etag = e9fd8ef4740d5559fa495580b04ec3437b99edbfb8452813907337f9374c1282
+	sha = 6dfe21fbd4a8390448958c714f8e9006fc4ac3ca
+	etag = de7c6b643bac2fc6651fa08f69d628cbbe12e7050829b981ac771e1b9ccccd89
 	weak
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
