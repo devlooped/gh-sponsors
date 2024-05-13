@@ -5,12 +5,6 @@ VisualStudioVersion = 17.7.33913.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extension", "src\Extension\Extension.csproj", "{37F8F06D-9E5B-43A8-9ABD-B12CB0409904}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCB7A75C-01A9-4305-B7DF-4F9E0680524B}"
-	ProjectSection(SolutionItems) = preProject
-		.netconfig = .netconfig
-		readme.md = readme.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
