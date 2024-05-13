@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.0-alpha](https://github.com/devlooped/gh-sponsors/tree/v1.0.0-alpha) (2024-05-13)
+
+[Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.5.0-alpha...v1.0.0-alpha)
+
+:twisted_rightwards_arrows: Merged:
+
+- Make standalone GH extension CLI reuse most code from upstream [\#95](https://github.com/devlooped/gh-sponsors/pull/95) (@kzu)
+
 ## [v0.5.0-alpha](https://github.com/devlooped/gh-sponsors/tree/v0.5.0-alpha) (2024-04-09)
 
 [Full Changelog](https://github.com/devlooped/gh-sponsors/compare/v0.4.0...v0.5.0-alpha)
