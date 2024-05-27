@@ -9,6 +9,7 @@ on:
 
 env:
   RestoreUseSkipNonexistentTargets: true
+  Configuration: Release
     
 jobs:
   build:
@@ -19,10 +20,10 @@ jobs:
 
       - name: 📦 publish
         run: |
-          dotnet publish src/Extension/Extension.csproj -c Release -r win-x64 --self-contained -o bin/win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-          dotnet publish src/Extension/Extension.csproj -c Release -r osx-x64 --self-contained -o bin/osx-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-          dotnet publish src/Extension/Extension.csproj -c Release -r osx-arm64 --self-contained -o bin/osx-arm64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-          dotnet publish src/Extension/Extension.csproj -c Release -r linux-x64 --self-contained -o bin/linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          dotnet publish src/Extension/Extension.csproj -r win-x64 -o bin/win-x64 
+          dotnet publish src/Extension/Extension.csproj -r osx-x64 -o bin/osx-x64 
+          dotnet publish src/Extension/Extension.csproj -r osx-arm64 -o bin/osx-arm64 
+          dotnet publish src/Extension/Extension.csproj -r linux-x64 -o bin/linux-x64 
 
       - name: ➡️ artifacts
         run: |
